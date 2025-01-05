@@ -187,55 +187,8 @@ local ChatBypassTab = Window:MakeTab({
 -- Função Chat Bypass
 ChatBypassTab:AddButton({
     Name = "Chat Bypass",
-    Callback = function()
+    Callback = functio()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
         notify("Chat Bypass", "Chat Bypass ativado!")
     end
 })
-
--- Aba Proteção 
-local ProteçõesTab = Window:MakeTab({
-    Name = "Proteções",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
--- Função Anti Void
-local function antiVoid(character)
-    local humanoid = character:WaitForChild("Humanoid")
-    local defaultPosition = character.HumanoidRootPart.Position
-    local checkInterval = 0.5 -- Intervalo de checagem em segundos
-
-    -- Conectar à função de checagem
-    game:GetService("RunService").Heartbeat:Connect(function()
-        -- Verificar a altura do personagem
-        local position = character.HumanoidRootPart.Position
-
-        -- Se a altura for negativa (fora do mapa ou "void")
-        if position.Y < -100 then
-            -- Corrigir a posição para uma altura segura
-            character:SetPrimaryPartCFrame(CFrame.new(defaultPosition.X, 100, defaultPosition.Z))
-            notify("Anti Void", "Seu personagem foi restaurado para uma posição segura!")
-        end
-    end)
-end
-
--- Ativar Anti Void
-ProteçãoTab:AddButton({
-    Name = "Anti Void",
-    Callback = function()
-        local player = game.Players.LocalPlayer
-        local character = player.Character or player.CharacterAdded:Wait()
-
-        -- Inicializar proteção anti void
-        antiVoid(character)
-        notify("Anti Void", "Proteção contra void ativada!")
-    end
-})
-
--- Monitorar a adição de jogadores para Anti Void
-game.Players.PlayerAdded:Connect(function(player)
-    player.CharacterAdded:Connect(function(character)
-        antiVoid(character)
-    end)
-end)
