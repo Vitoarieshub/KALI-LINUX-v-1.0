@@ -187,7 +187,7 @@ local ChatBypassTab = Window:MakeTab({
 -- Função Chat Bypass
 ChatBypassTab:AddButton({
     Name = "Chat Bypass",
-    Callback = functio()
+    Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
         notify("Chat Bypass", "Chat Bypass ativado!")
     end
