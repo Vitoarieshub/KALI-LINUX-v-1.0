@@ -37,6 +37,7 @@ GeralTab:AddButton({
     Name = "Fly Car",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
+        notify("Fly Car", "Fly Car ativado!")
     end
 })
 
@@ -53,7 +54,7 @@ local function toggleNoclip(enable)
                 end
             end)
         end
-        notify("Noclip", "Você pode atravessar paredes agora!")
+        notify("Noclip", "Travessia de paredes ativada!")
     else
         if noclipConnection then
             noclipConnection:Disconnect()
@@ -64,14 +65,14 @@ local function toggleNoclip(enable)
                 part.CanCollide = true
             end
         end
-        notify("Noclip", "Travessa Paredes desativado.")
+        notify("Noclip", "Travessia de paredes desativada.")
     end
 end
 
 GeralTab:AddToggle({
-    Name = "Travessa Paredes",
+    Name = "Noclip",
     Default = false,
-    Callback = toggleTravessaParedes
+    Callback = toggleNoclip
 })
 
 -- Infinite Jump
@@ -111,7 +112,7 @@ GeralTab:AddTextbox({
         local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
         if humanoid then
             humanoid.JumpPower = tonumber(value)
-            notify("Altura do Pulo", "Altura do Pulo ajustada para " .. value)
+            notify("Altura do Pulo", "Altura do pulo ajustada para " .. value)
         end
     end
 })
@@ -154,46 +155,21 @@ VisualTab:AddButton({
     end
 })
 
--- Aba: Visual
-Tabs.Main:AddParagraph({ Title ="FOV", Content = "Campo de Visão " })
-
--- Variável para armazenar o estado do FOV (ativo ou inativo)
-local fovActive = false
-
--- Função de callback para o toggle
-function toggleFov(state)
-    fovActive = state
-    if fovActive then
-        print("FOV ativado. Você pode ajustar o valor do FOV.")
-        -- Exemplo: defina o FOV inicial quando ativado
-        setFOV(90)
+-- Campo de Visão
+local function toggleFOV(state)
+    if state then
+        game.Workspace.CurrentCamera.FieldOfView = 90
+        notify("FOV", "Campo de Visão ativado.")
     else
-        print("FOV desativado. Voltando ao FOV padrão.")
-        -- Exemplo: reverter para o FOV padrão quando desativado
-        setFOV(70) -- Substitua 70 pelo valor padrão desejado
+        game.Workspace.CurrentCamera.FieldOfView = 70
+        notify("FOV", "Campo de Visão desativado.")
     end
 end
 
--- Função para alterar o FOV
-function setFOV(newFOV)
-    -- Verifique se o valor de FOV está dentro de um intervalo aceitável (por exemplo, 30 a 320 graus)
-    if newFOV < 30 or newFOV > 320 then
-        print("FOV deve estar entre 30 e 320 graus.")
-        return
-    end
-
-    -- Aqui você deve adicionar a função ou método específico do seu ambiente que altera o FOV
-    -- Exemplo fictício: game.setCameraFOV(newFOV)
-    game.setCameraFOV(newFOV)
-
-    print("FOV alterado para " .. newFOV .. " graus.")
-end
-
--- Adiciona o toggle com a função de callback
-Tab:AddToggle({
+VisualTab:AddToggle({
     Name = "Campo de Visão",
     Default = false,
-    Callback = togglecampodevisão
+    Callback = toggleFOV
 })
 
 -- Aba Jogadores
@@ -216,11 +192,12 @@ JogadoresTab:AddButton({
     Name = "BringParts",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
+        notify("BringParts", "BringParts ativado!")
     end
 })
 
 -- Aba Configurações
-localConfiguraçõesTab = Window:MakeTab({
+local ConfiguraçõesTab = Window:MakeTab({
     Name = "Configurações",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
@@ -235,31 +212,34 @@ ConfiguraçõesTab:AddButton({
     end
 })
 
-ConfiguraçõesTab:AddToggle({
-    Name = "Anti void",
-    Default = false,
-    Callback = toggleIantivoid
-})
+-- Anti Void
+local antiVoidEnabled = false
+local antiVoidConnection
 
-local function enableAntiVoid()
-    -- Definir o limite do vazio (abaixo desse ponto, o jogador será reposicionado)
-    local threshold = -10
-    -- Definir a posição segura para reposicionar o jogador
-    local safePosition = Vector3.new(0, 50, 0)
-
-    -- Conectar a função ao evento Stepped do RunService para verificar constantemente a posição do jogador
-    game:GetService("RunService").Stepped:Connect(function()
-        local player = game.Players.LocalPlayer
-        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            local hrp = player.Character.HumanoidRootPart
-            -- Se o jogador estiver abaixo do limite, reposicioná-lo
-            if hrp.Position.Y < threshold then
-                hrp.CFrame = CFrame.new(safePosition)
-                print("Anti Void: Jogador reposicionado para evitar cair no vazio.")
+local function toggleAntiVoid(state)
+    antiVoidEnabled = state
+    if antiVoidEnabled then
+        antiVoidConnection = game:GetService("RunService").Stepped:Connect(function()
+            local player = game.Players.LocalPlayer
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local hrp = player.Character.HumanoidRootPart
+                if hrp.Position.Y < -10 then
+                    hrp.CFrame = CFrame.new(0, 50, 0)
+                    notify("Anti Void", "Você foi salvo do vazio!")
+                end
             end
+        end)
+    else
+        if antiVoidConnection then
+            antiVoidConnection:Disconnect()
+            antiVoidConnection = nil
         end
-    end)
+        notify("Anti Void", "Anti Void desativado.")
+    end
 end
 
--- Ativar o Anti Void ao executar o script
-enableAntiVoid()
+ConfiguraçõesTab:AddToggle({
+    Name = "Anti Void",
+    Default = false,
+    Callback = toggleAntiVoid
+})
