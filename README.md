@@ -37,6 +37,7 @@ GeralTab:AddButton({
     Name = "Fly Car",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
+        notify("Fly Car", "Fly Car ativado!")
     end
 })
 
@@ -154,46 +155,26 @@ VisualTab:AddButton({
     end
 })
 
--- Aba: Visual
-Tabs.Main:AddParagraph({ Title ="FOV", Content = "Campo de Visão " })
-
--- Variável para armazenar o estado do FOV (ativo ou inativo)
-local fovActive = false
-
--- Função de callback para o toggle
-function toggleFov(state)
-    fovActive = state
-    if fovActive then
-        print("FOV ativado. Você pode ajustar o valor do FOV.")
-        -- Exemplo: defina o FOV inicial quando ativado
-        setFOV(90)
-    else
-        print("FOV desativado. Voltando ao FOV padrão.")
-        -- Exemplo: reverter para o FOV padrão quando desativado
-        setFOV(70) -- Substitua 70 pelo valor padrão desejado
-    end
-end
-
--- Função para alterar o FOV
-function setFOV(newFOV)
-    -- Verifique se o valor de FOV está dentro de um intervalo aceitável (por exemplo, 30 a 320 graus)
+-- FOV
+local function setFOV(newFOV)
     if newFOV < 30 or newFOV > 320 then
-        print("FOV deve estar entre 30 e 320 graus.")
+        notify("FOV", "FOV deve estar entre 30 e 320 graus.")
         return
     end
-
-    -- Aqui você deve adicionar a função ou método específico do seu ambiente que altera o FOV
-    -- Exemplo fictício: game.setCameraFOV(newFOV)
-    game.setCameraFOV(newFOV)
-
-    print("FOV alterado para " .. newFOV .. " graus.")
+    workspace.CurrentCamera.FieldOfView = newFOV
+    notify("FOV", "FOV alterado para " .. newFOV .. " graus.")
 end
 
--- Adiciona o toggle com a função de callback
-Tab:AddToggle({
-    Name = "Fov",
+VisualTab:AddToggle({
+    Name = "FOV",
     Default = false,
-    Callback = toggleFov
+    Callback = function(state)
+        if state then
+            setFOV(90)
+        else
+            setFOV(70)
+        end
+    end
 })
 
 -- Aba Jogadores
@@ -216,6 +197,7 @@ JogadoresTab:AddButton({
     Name = "BringParts",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
+        notify("BringParts", "BringParts ativado!")
     end
 })
 
@@ -226,7 +208,6 @@ local ChatBypassTab = Window:MakeTab({
     PremiumOnly = false
 })
 
--- Função Chat Bypass
 ChatBypassTab:AddButton({
     Name = "Chat Bypass",
     Callback = function()
