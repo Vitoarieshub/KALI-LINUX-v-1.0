@@ -212,6 +212,12 @@ local ConfiguraçõesTab = Window:MakeTab({
     PremiumOnly = false
 })
 
+-- Botão Resetar Personagem
+ConfiguraçõesTab:AddButton({
+    Name = "Resetar Personagem",
+    Callback = resetCharacter
+})
+
 -- Função para Resetar o Personagem
 local function resetCharacter()
     local player = game.Players.LocalPlayer
@@ -220,12 +226,6 @@ local function resetCharacter()
         notify("Resetar", "Personagem resetado!")
     end
 end
-
--- Botão Resetar Personagem
-ConfiguraçõesTab:AddButton({
-    Name = "Resetar Personagem",
-    Callback = resetCharacter
-})
 
 -- Botão Chat Bypass
 ConfiguraçõesTab:AddButton({
