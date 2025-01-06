@@ -17,6 +17,16 @@ local function notify(title, text)
     })
 end
 
+-- Função para ajustar FOV
+local function setFOV(newFOV)
+    if newFOV < 30 or newFOV > 320 then
+        print("FOV deve estar entre 30 e 320 graus.")
+        return
+    end
+    game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
+    print("FOV alterado para " .. newFOV .. " graus.")
+end
+
 -- Aba Geral
 local GeralTab = Window:MakeTab({
     Name = "Geral",
@@ -24,7 +34,7 @@ local GeralTab = Window:MakeTab({
     PremiumOnly = false
 })
 
--- Botões de Funções Gerais
+-- Funções Gerais (Fly, Noclip, Pulo Infinito, etc)
 GeralTab:AddButton({
     Name = "Fly",
     Callback = function()
@@ -40,7 +50,6 @@ GeralTab:AddButton({
     end
 })
 
--- Noclip
 local noclipConnection
 local function toggleNoclip(enable)
     if enable then
@@ -74,7 +83,6 @@ GeralTab:AddToggle({
     Callback = toggleNoclip
 })
 
--- Infinite Jump
 local jumpConnection
 local function toggleInfiniteJump(enable)
     if enable then
@@ -102,7 +110,6 @@ GeralTab:AddToggle({
     Callback = toggleInfiniteJump
 })
 
--- Ajustar Altura do Pulo
 GeralTab:AddTextbox({
     Name = "Altura do Pulo",
     Default = "50",
@@ -116,7 +123,6 @@ GeralTab:AddTextbox({
     end
 })
 
--- Ajustar Velocidade
 GeralTab:AddTextbox({
     Name = "Velocidade",
     Default = "20",
@@ -130,24 +136,14 @@ GeralTab:AddTextbox({
     end
 })
 
--- FOV (Campo de Visão)
 local fovActive = false
 local function toggleFov(state)
     fovActive = state
     if fovActive then
         setFOV(90)
     else
-        setFOV(70) -- Substitua 70 pelo valor padrão desejado
+        setFOV(70)
     end
-end
-
-local function setFOV(newFOV)
-    if newFOV < 30 or newFOV > 320 then
-        print("FOV deve estar entre 30 e 320 graus.")
-        return
-    end
-    game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
-    print("FOV alterado para " .. newFOV .. " graus.")
 end
 
 GeralTab:AddToggle({
@@ -163,7 +159,7 @@ local VisualTab = Window:MakeTab({
     PremiumOnly = false
 })
 
--- Botões de ESP
+-- Funções de ESP
 VisualTab:AddButton({
     Name = "ESP Nome",
     Callback = function()
