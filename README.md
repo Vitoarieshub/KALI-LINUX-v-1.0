@@ -40,7 +40,7 @@ GeralTab:AddButton({
     end
 })
 
--- Noclip
+-- Função Noclip
 local noclipConnection
 local function toggleNoclip(enable)
     if enable then
@@ -71,10 +71,10 @@ end
 GeralTab:AddToggle({
     Name = "Travessa Paredes",
     Default = false,
-    Callback = toggleTravessaParedes
+    Callback = toggleNoclip
 })
 
--- Infinite Jump
+-- Função Pulo Infinito
 local jumpConnection
 local function toggleInfiniteJump(enable)
     if enable then
@@ -154,50 +154,32 @@ VisualTab:AddButton({
     end
 })
 
-local Section = VisualTab:AddSection({
-	Name = "Ativar/desativar"
-})
-
--- Aba: Visual
-Tabs.Main:AddParagraph({ Title ="FOV", Content = "Campo de Visão " })
-
--- Variável para armazenar o estado do FOV (ativo ou inativo)
+-- Aba: Campo de Visão
 local fovActive = false
-
--- Função de callback para o toggle
-function toggleFov(state)
+local function toggleFov(state)
     fovActive = state
     if fovActive then
-        print("FOV ativado. Você pode ajustar o valor do FOV.")
-        -- Exemplo: defina o FOV inicial quando ativado
         setFOV(90)
+        print("FOV ativado. Ajuste o valor do FOV.")
     else
-        print("FOV desativado. Voltando ao FOV padrão.")
-        -- Exemplo: reverter para o FOV padrão quando desativado
-        setFOV(70) -- Substitua 70 pelo valor padrão desejado
+        setFOV(70)
+        print("FOV desativado. Voltando ao valor padrão.")
     end
 end
 
--- Função para alterar o FOV
-function setFOV(newFOV)
-    -- Verifique se o valor de FOV está dentro de um intervalo aceitável (por exemplo, 30 a 320 graus)
+local function setFOV(newFOV)
     if newFOV < 30 or newFOV > 320 then
         print("FOV deve estar entre 30 e 320 graus.")
         return
     end
-
-    -- Aqui você deve adicionar a função ou método específico do seu ambiente que altera o FOV
-    -- Exemplo fictício: game.setCameraFOV(newFOV)
     game.setCameraFOV(newFOV)
-
     print("FOV alterado para " .. newFOV .. " graus.")
 end
 
--- Adiciona o toggle com a função de callback
-Tab:AddToggle({
+VisualTab:AddToggle({
     Name = "Campo de Visão",
     Default = false,
-    Callback = togglecampodevisão
+    Callback = toggleFov
 })
 
 -- Aba Jogadores
@@ -224,10 +206,25 @@ JogadoresTab:AddButton({
 })
 
 -- Aba Configurações
-localConfiguraçõesTab = Window:MakeTab({
+local ConfiguraçõesTab = Window:MakeTab({
     Name = "Configurações",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
+})
+
+-- Função para Resetar o Personagem
+local function resetCharacter()
+    local player = game.Players.LocalPlayer
+    if player.Character then
+        player.Character:BreakJoints()  -- Reseta o personagem
+        notify("Resetar", "Personagem resetado!")
+    end
+end
+
+-- Botão Resetar Personagem
+ConfiguraçõesTab:AddButton({
+    Name = "Resetar Personagem",
+    Callback = resetCharacter
 })
 
 -- Botão Chat Bypass
@@ -237,23 +234,4 @@ ConfiguraçõesTab:AddButton({
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
         notify("Chat Bypass", "Chat Bypass ativado!")
     end
-})
-
-local Section = ConfiguraçõesTab:AddSection({
-	Name = "Configuração do Personagem"
-})
-
--- Função para resetar o personagem
-local function resetCharacter()
-    local player = game.Players.LocalPlayer
-    if player.Character then
-        player.Character:BreakJoints()  -- Reseta o personagem
-        notify("Resetar", "Personagem resetado!")
-    end
-end
-
--- Botão para resetar o personagem
-ConfiguraçõesTab:AddButton({
-    Name = "Resetar Personagem",
-    Callback = resetCharacter
 })
