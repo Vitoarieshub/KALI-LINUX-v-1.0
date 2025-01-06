@@ -244,6 +244,15 @@ game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(playerDropdown)
 end)
 
+-- Função de teleporte 
+TeleporteTab:AddButton({
+    Name = "Teleporte 2",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
+        notify("Teleporte", "Teleporte ativado!")
+    end
+})
+
 -- Aba Troll
 local TrollTab = Window:MakeTab({
     Name = "Troll",
