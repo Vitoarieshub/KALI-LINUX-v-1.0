@@ -245,7 +245,7 @@ game.Players.PlayerRemoving:Connect(function()
 end)
 
 -- Função de teleporte 
-TeleporteTab:AddButton({
+TeleportTab:AddButton({
     Name = "Teleporte 2",
     Callback = function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
@@ -269,7 +269,6 @@ TrollTab:AddButton({
     end
 })
 
--- Funções de Troll
 TrollTab:AddButton({
     Name = "Troll",
     Callback = function()
