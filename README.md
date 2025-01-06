@@ -71,7 +71,7 @@ end
 GeralTab:AddToggle({
     Name = "Travessa Paredes",
     Default = false,
-    Callback = toggletravessaparedes
+    Callback = toggleNoclip
 })
 
 -- Infinite Jump
@@ -154,6 +154,13 @@ VisualTab:AddButton({
     end
 })
 
+-- FOV
+local FovTab = Window:MakeTab({
+    Name = "Campo de Visão",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
 -- Variável para armazenar o estado do FOV (ativo ou inativo)
 local fovActive = false
 
@@ -186,7 +193,7 @@ end
 FovTab:AddToggle({
     Name = "Campo de Visão",
     Default = false,
-    Callback = toggleFov  -- Corrigido para chamar a função toggleFov
+    Callback = toggleFov
 })
 
 -- Aba Jogadores
@@ -220,7 +227,7 @@ local FunçõesTab = Window:MakeTab({
 })
 
 -- Função Chat Bypass
-ChatBypassTab:AddButton({
+FunçõesTab:AddButton({
     Name = "Chat Bypass",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
