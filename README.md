@@ -73,12 +73,12 @@ local function toggleNoclip(enable)
                 part.CanCollide = true
             end
         end
-        notify("Noclip", "Noclip desativado.")
+        notify("Noclip", "Travessa Paredes desativado.")
     end
 end
 
 GeralTab:AddToggle({
-    Name = "Noclip",
+    Name = "Travessa Paredes",
     Default = false,
     Callback = toggleNoclip
 })
