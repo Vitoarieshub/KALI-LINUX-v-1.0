@@ -37,6 +37,7 @@ GeralTab:AddButton({
     Name = "Fly Car",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
+        notify("Fly Car", "Fly Car ativado!")
     end
 })
 
@@ -71,7 +72,7 @@ end
 GeralTab:AddToggle({
     Name = "Travessa Paredes",
     Default = false,
-    Callback = toggleTravessaParedes
+    Callback = toggleNoclip
 })
 
 -- Infinite Jump
@@ -154,12 +155,12 @@ VisualTab:AddButton({
     end
 })
 
-local Section = VisualTab:AddSection({
-	Name = "Ativar/desativar"
-})
-
 -- Aba: Visual
-Tabs.Main:AddParagraph({ Title ="FOV", Content = "Campo de Visão " })
+local Tabs = Window:MakeTab({
+    Name = "FOV",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
 
 -- Variável para armazenar o estado do FOV (ativo ou inativo)
 local fovActive = false
@@ -188,16 +189,16 @@ function setFOV(newFOV)
 
     -- Aqui você deve adicionar a função ou método específico do seu ambiente que altera o FOV
     -- Exemplo fictício: game.setCameraFOV(newFOV)
-    game.setCameraFOV(newFOV)
+    game.workspace.CurrentCamera.FieldOfView = newFOV
 
     print("FOV alterado para " .. newFOV .. " graus.")
 end
 
 -- Adiciona o toggle com a função de callback
-Tab:AddToggle({
+Tabs:AddToggle({
     Name = "Campo de Visão",
     Default = false,
-    Callback = togglecampodevisão
+    Callback = toggleFov
 })
 
 -- Aba Jogadores
@@ -220,11 +221,12 @@ JogadoresTab:AddButton({
     Name = "BringParts",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
+        notify("Bring Parts", "Bring Parts ativado!")
     end
 })
 
 -- Aba Configurações
-localConfiguraçõesTab = Window:MakeTab({
+local ConfiguraçõesTab = Window:MakeTab({
     Name = "Configurações",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
@@ -237,10 +239,4 @@ ConfiguraçõesTab:AddButton({
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
         notify("Chat Bypass", "Chat Bypass ativado!")
     end
-})
-
--- Botão para resetar o personagem
-ConfiguraçõesTab:AddButton({
-    Name = "Resetar Personagem",
-    Callback = resetCharacter
 })
