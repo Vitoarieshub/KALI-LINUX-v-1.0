@@ -64,12 +64,12 @@ local function toggleNoclip(enable)
                 part.CanCollide = true
             end
         end
-        notify("Noclip", "Travessa Paredes desativado.")
+        notify("Noclip", "Noclip desativado.")
     end
 end
 
 GeralTab:AddToggle({
-    Name = "Travessa Paredes",
+    Name = "Noclip",
     Default = false,
     Callback = toggleNoclip
 })
@@ -130,6 +130,45 @@ GeralTab:AddTextbox({
     end
 })
 
+-- Variável para armazenar o estado do FOV (ativo ou inativo)
+local fovActive = false
+
+-- Função de callback para o toggle
+function toggleFov(state)
+    fovActive = state
+    if fovActive then
+        print("FOV ativado. Você pode ajustar o valor do FOV.")
+        -- Exemplo: defina o FOV inicial quando ativado
+        setFOV(90)
+    else
+        print("FOV desativado. Voltando ao FOV padrão.")
+        -- Exemplo: reverter para o FOV padrão quando desativado
+        setFOV(70) -- Substitua 70 pelo valor padrão desejado
+    end
+end
+
+-- Função para alterar o FOV
+function setFOV(newFOV)
+    -- Verifique se o valor de FOV está dentro de um intervalo aceitável (por exemplo, 30 a 320 graus)
+    if newFOV < 30 or newFOV > 320 then
+        print("FOV deve estar entre 30 e 320 graus.")
+        return
+    end
+
+    -- Aqui você deve adicionar a função ou método específico do seu ambiente que altera o FOV
+    -- Exemplo fictício: game.setCameraFOV(newFOV)
+    game.setCameraFOV(newFOV)
+
+    print("FOV alterado para " .. newFOV .. " graus.")
+end
+
+-- Adiciona o toggle com a função de callback
+Tab:AddToggle({
+    Name = "Fov",
+    Default = false,
+    Callback = toggleFov
+})
+
 -- Aba Visual
 local VisualTab = Window:MakeTab({
     Name = "Visual",
@@ -147,45 +186,11 @@ VisualTab:AddButton({
 })
 
 VisualTab:AddButton({
-    Name = "ESP Linhas",
+    Name = "ESP Linha",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/nnHbfvGW"))()
         notify("ESP", "ESP linha ativado!")
     end
-})
-
--- Aba FOV
-local fovActive = false
-
--- Função de callback para o toggle de FOV
-local function toggleFov(state)
-    fovActive = state
-    if fovActive then
-        print("FOV ativado. Você pode ajustar o valor do FOV.")
-        setFOV(90) -- Defina o valor inicial do FOV aqui
-    else
-        print("FOV desativado. Voltando ao FOV padrão.")
-        setFOV(70) -- Valor padrão do FOV
-    end
-end
-
--- Função para alterar o FOV
-local function setFOV(newFOV)
-    -- Verifique se o valor de FOV está dentro de um intervalo aceitável (30 a 320 graus)
-    if newFOV < 30 or newFOV > 320 then
-        print("FOV deve estar entre 30 e 320 graus.")
-        return
-    end
-    -- Modificando o FOV da câmera
-    game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
-    print("FOV alterado para " .. newFOV .. " graus.")
-end
-
--- Adiciona o toggle de FOV
-VisualTab:AddToggle({
-    Name = "Campo de Visão",
-    Default = false,
-    Callback = toggleFov
 })
 
 -- Aba Jogadores
@@ -208,5 +213,21 @@ JogadoresTab:AddButton({
     Name = "BringParts",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
+    end
+})
+
+-- Aba Chat Bypass
+local ChatBypassTab = Window:MakeTab({
+    Name = "Chat Bypass",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- Função Chat Bypass
+ChatBypassTab:AddButton({
+    Name = "Chat Bypass",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
+        notify("Chat Bypass", "Chat Bypass ativado!")
     end
 })
