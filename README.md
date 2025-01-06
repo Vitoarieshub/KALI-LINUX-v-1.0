@@ -20,11 +20,11 @@ end
 -- Função para ajustar FOV
 local function setFOV(newFOV)
     if newFOV < 30 or newFOV > 320 then
-        print("FOV deve estar entre 30 e 320 graus.")
+        notify("Erro", "FOV deve estar entre 30 e 320 graus.")
         return
     end
     game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
-    print("FOV alterado para " .. newFOV .. " graus.")
+    notify("FOV", "FOV alterado para " .. newFOV .. " graus.")
 end
 
 -- Aba Geral
@@ -34,7 +34,7 @@ local GeralTab = Window:MakeTab({
     PremiumOnly = false
 })
 
--- Funções Gerais (Fly, Noclip, Pulo Infinito, etc)
+-- Função Fly
 GeralTab:AddButton({
     Name = "Fly",
     Callback = function()
@@ -43,13 +43,16 @@ GeralTab:AddButton({
     end
 })
 
+-- Função Fly Car
 GeralTab:AddButton({
     Name = "Fly Car",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
+        notify("Fly Car", "Fly Car ativado!")
     end
 })
 
+-- Função Noclip
 local noclipConnection
 local function toggleNoclip(enable)
     if enable then
@@ -83,6 +86,7 @@ GeralTab:AddToggle({
     Callback = toggleNoclip
 })
 
+-- Função Pulo Infinito
 local jumpConnection
 local function toggleInfiniteJump(enable)
     if enable then
@@ -110,6 +114,7 @@ GeralTab:AddToggle({
     Callback = toggleInfiniteJump
 })
 
+-- Ajustar Altura do Pulo
 GeralTab:AddTextbox({
     Name = "Altura do Pulo",
     Default = "50",
@@ -123,6 +128,7 @@ GeralTab:AddTextbox({
     end
 })
 
+-- Ajustar Velocidade
 GeralTab:AddTextbox({
     Name = "Velocidade",
     Default = "20",
@@ -136,6 +142,7 @@ GeralTab:AddTextbox({
     end
 })
 
+-- Alternar Campo de Visão (FOV)
 local fovActive = false
 local function toggleFov(state)
     fovActive = state
@@ -197,22 +204,17 @@ local function teleportToPlayer(playerName)
     end
 end
 
--- Variável para armazenar o Dropdown de jogadores
-local playerDropdown
-
--- Função para atualizar a lista de jogadores
-local function updatePlayerList()
+-- Atualizar Lista de Jogadores
+local function updatePlayerList(dropdown)
     local playerNames = {}
     for _, player in ipairs(game.Players:GetPlayers()) do
         table.insert(playerNames, player.Name)
     end
-    if playerDropdown then
-        playerDropdown:Refresh(playerNames, true)
-    end
+    dropdown:Refresh(playerNames, true)
 end
 
--- Caixa de Seleção de Jogadores
-playerDropdown = TeleportTab:AddDropdown({
+-- Dropdown de Seleção de Jogador
+local playerDropdown = TeleportTab:AddDropdown({
     Name = "Escolher Jogador",
     Options = {},
     Default = nil,
@@ -221,61 +223,54 @@ playerDropdown = TeleportTab:AddDropdown({
     end
 })
 
--- Botão para atualizar manualmente a lista de jogadores
+-- Botão para Atualizar Lista de Jogadores
 TeleportTab:AddButton({
     Name = "Atualizar Lista de Jogadores",
     Callback = function()
-        updatePlayerList()
+        updatePlayerList(playerDropdown)
         notify("Atualizar Lista", "Lista de jogadores atualizada!")
     end
 })
 
--- Inicializa a lista de jogadores ao carregar o script
-updatePlayerList()
+-- Inicializar a Lista de Jogadores ao Carregar o Script
+updatePlayerList(playerDropdown)
 
--- Eventos para atualizar a lista quando um jogador entra ou sai do jogo
-game.Players.PlayerAdded:Connect(updatePlayerList)
-game.Players.PlayerRemoving:Connect(updatePlayerList)
+-- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
+game.Players.PlayerAdded:Connect(function()
+    updatePlayerList(playerDropdown)
+end)
 
--- Funções de teleport
-TeleportTab:AddButton({
-    Name = "Teleport 2",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua"))()
-        notify("Teleport", "Teleport ativado!")
-    end
-})
+game.Players.PlayerRemoving:Connect(function()
+    updatePlayerList(playerDropdown)
+end)
 
--- Aba Troll 
-local JogadoresTab = Window:MakeTab({
+-- Aba Troll
+local TrollTab = Window:MakeTab({
     Name = "Troll",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
+-- Funções de Troll
 TrollTab:AddButton({
     Name = "BringParts",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
+        notify("BringParts", "BringParts ativado!")
     end
 })
 
+-- Funções de Troll
 TrollTab:AddButton({
     Name = "Troll",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/38Jra00x"))()
+        notify("Troll", "Troll ativado!")
     end
 })
 
--- Aba Chat Bypass
-local ChatBypassTab = Window:MakeTab({
-    Name = "Chat Bypass",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
 -- Função Chat Bypass
-ChatBypassTab:AddButton({
+TrollTab:AddButton({
     Name = "Chat Bypass",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
