@@ -37,7 +37,6 @@ GeralTab:AddButton({
     Name = "Fly Car",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
-        notify("Fly Car", "Fly Car ativado!")
     end
 })
 
@@ -72,7 +71,7 @@ end
 GeralTab:AddToggle({
     Name = "Travessa Paredes",
     Default = false,
-    Callback = toggleNoclip
+    Callback = toggleTravessaParedes
 })
 
 -- Infinite Jump
@@ -156,11 +155,7 @@ VisualTab:AddButton({
 })
 
 -- Aba: Visual
-local Tabs = Window:MakeTab({
-    Name = "FOV",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
+Tabs.Main:AddParagraph({ Title ="FOV", Content = "Campo de Visão " })
 
 -- Variável para armazenar o estado do FOV (ativo ou inativo)
 local fovActive = false
@@ -189,16 +184,16 @@ function setFOV(newFOV)
 
     -- Aqui você deve adicionar a função ou método específico do seu ambiente que altera o FOV
     -- Exemplo fictício: game.setCameraFOV(newFOV)
-    game.workspace.CurrentCamera.FieldOfView = newFOV
+    game.setCameraFOV(newFOV)
 
     print("FOV alterado para " .. newFOV .. " graus.")
 end
 
 -- Adiciona o toggle com a função de callback
-Tabs:AddToggle({
+Tab:AddToggle({
     Name = "Campo de Visão",
     Default = false,
-    Callback = toggleFov
+    Callback = togglecampodevisão
 })
 
 -- Aba Jogadores
@@ -221,22 +216,12 @@ JogadoresTab:AddButton({
     Name = "BringParts",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
-        notify("Bring Parts", "Bring Parts ativado!")
     end
 })
 
--- Aba Configurações
-local ConfiguraçõesTab = Window:MakeTab({
-    Name = "Configurações",
+-- Aba Funções
+local FunçõesTab = Window:MakeTab({
+    Name = "Funções",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
-})
-
--- Botão Chat Bypass
-ConfiguraçõesTab:AddButton({
-    Name = "Chat Bypass",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
-        notify("Chat Bypass", "Chat Bypass ativado!")
-    end
 })
