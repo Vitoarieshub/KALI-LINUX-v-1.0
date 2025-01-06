@@ -71,7 +71,7 @@ end
 GeralTab:AddToggle({
     Name = "Travessa Paredes",
     Default = false,
-    Callback = toggleTravessaParedes
+    Callback = toggleNoclip
 })
 
 -- Infinite Jump
@@ -154,46 +154,38 @@ VisualTab:AddButton({
     end
 })
 
--- Aba: Visual
-Tabs.Main:AddParagraph({ Title ="FOV", Content = "Campo de Visão " })
-
--- Variável para armazenar o estado do FOV (ativo ou inativo)
+-- Aba FOV
 local fovActive = false
 
--- Função de callback para o toggle
-function toggleFov(state)
+-- Função de callback para o toggle de FOV
+local function toggleFov(state)
     fovActive = state
     if fovActive then
         print("FOV ativado. Você pode ajustar o valor do FOV.")
-        -- Exemplo: defina o FOV inicial quando ativado
-        setFOV(90)
+        setFOV(90) -- Defina o valor inicial do FOV aqui
     else
         print("FOV desativado. Voltando ao FOV padrão.")
-        -- Exemplo: reverter para o FOV padrão quando desativado
-        setFOV(70) -- Substitua 70 pelo valor padrão desejado
+        setFOV(70) -- Valor padrão do FOV
     end
 end
 
 -- Função para alterar o FOV
-function setFOV(newFOV)
-    -- Verifique se o valor de FOV está dentro de um intervalo aceitável (por exemplo, 30 a 320 graus)
+local function setFOV(newFOV)
+    -- Verifique se o valor de FOV está dentro de um intervalo aceitável (30 a 320 graus)
     if newFOV < 30 or newFOV > 320 then
         print("FOV deve estar entre 30 e 320 graus.")
         return
     end
-
-    -- Aqui você deve adicionar a função ou método específico do seu ambiente que altera o FOV
-    -- Exemplo fictício: game.setCameraFOV(newFOV)
-    game.setCameraFOV(newFOV)
-
+    -- Modificando o FOV da câmera
+    game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
     print("FOV alterado para " .. newFOV .. " graus.")
 end
 
--- Adiciona o toggle com a função de callback
-Tab:AddToggle({
+-- Adiciona o toggle de FOV
+VisualTab:AddToggle({
     Name = "Campo de Visão",
     Default = false,
-    Callback = togglecampodevisão
+    Callback = toggleFov
 })
 
 -- Aba Jogadores
@@ -217,11 +209,4 @@ JogadoresTab:AddButton({
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
     end
-})
-
--- Aba Funções
-local FunçõesTab = Window:MakeTab({
-    Name = "Funções",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
 })
