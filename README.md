@@ -176,20 +176,48 @@ VisualTab:AddButton({
     end
 })
 
--- Aba Jogadores
-local JogadoresTab = Window:MakeTab({
-    Name = "Jogadores",
+-- Aba Teleport
+local TeleportTab = Window:MakeTab({
+    Name = "Teleport",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
--- Funções de Jogadores
-JogadoresTab:AddButton({
-    Name = "Teleport",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua"))()
-        notify("Teleport", "Teleport ativado!")
+-- Função para teleportar para outro jogador
+local function teleportToPlayer(playerName)
+    local player = game.Players:FindFirstChild(playerName)
+    if player then
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            character:MoveTo(player.Character.HumanoidRootPart.Position)
+            notify("Teleporte", "Teleportado para " .. playerName)
+        end
+    else
+        notify("Erro", "Jogador não encontrado.")
     end
+end
+
+-- Adicionar lista de jogadores
+local playerNames = {}
+for _, player in ipairs(game.Players:GetPlayers()) do
+    table.insert(playerNames, player.Name)
+end
+
+-- Caixa de Seleção de Jogadores
+TeleportTab:AddDropdown({
+    Name = "Escolher Jogador",
+    Options = playerNames,
+    Default = playerNames[1],
+    Callback = function(selectedPlayer)
+        teleportToPlayer(selectedPlayer)
+    end
+})
+
+-- Aba Troll 
+local JogadoresTab = Window:MakeTab({
+    Name = "Jogadores",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
 })
 
 JogadoresTab:AddButton({
