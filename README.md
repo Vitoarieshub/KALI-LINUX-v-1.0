@@ -169,10 +169,10 @@ VisualTab:AddButton({
 })
 
 VisualTab:AddButton({
-    Name = "ESP Linha",
+    Name = "ESP Linhas",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/nnHbfvGW"))()
-        notify("ESP", "ESP linha ativado!")
+        notify("ESP", "ESP linhas ativado!")
     end
 })
 
