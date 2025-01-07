@@ -158,8 +158,8 @@ VisuaisTab:AddButton({
 
 -- Função para ajustar FOV
 local function setFOV(newFOV)
-    if newFOV < 30 or newFOV > 320 then
-        notify("Erro", "FOV deve estar entre 30 e 320 graus.")
+    if newFOV < 30 or newFOV > 120 then
+        notify("Erro", "FOV deve estar entre 30 e 120 graus.")
         return
     end
     game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
@@ -171,7 +171,7 @@ local fovActive = false
 local function toggleFov(state)
     fovActive = state
     if fovActive then
-        setFOV(90)
+        setFOV(290)
     else
         setFOV(70)
     end
@@ -235,8 +235,17 @@ local function stopSpectating()
     notify("Espectar", "Você parou de espectar.")
 end
 
--- Dropdown de Seleção de Jogador
-local playerDropdown = JogadorTab:AddDropdown({
+-- Atualizar Lista de Jogadores
+local function updatePlayerList(dropdown)
+    local playerNames = {}
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        table.insert(playerNames, player.Name)
+    end
+    dropdown:Refresh(playerNames, true)
+end
+
+-- Dropdown de Seleção de Jogador para espectar
+local spectateDropdown = JogadorTab:AddDropdown({
     Name = "Espectar Jogador",
     Options = {},
     Default = nil,
@@ -245,11 +254,11 @@ local playerDropdown = JogadorTab:AddDropdown({
     end
 })
 
--- Botão para Atualizar Lista de Jogadores
+-- Botão para Atualizar Lista de Jogadores para espectar
 JogadorTab:AddButton({
     Name = "Atualizar Lista de Jogadores",
     Callback = function()
-        updatePlayerList(playerDropdown)
+        updatePlayerList(spectateDropdown)
         notify("Atualizar Lista", "Lista de jogadores atualizada!")
     end
 })
@@ -274,17 +283,8 @@ local function teleportToPlayer(playerName)
     end
 end
 
--- Atualizar Lista de Jogadores
-local function updatePlayerList(dropdown)
-    local playerNames = {}
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        table.insert(playerNames, player.Name)
-    end
-    dropdown:Refresh(playerNames, true)
-end
-
--- Dropdown de Seleção de Jogador
-local playerDropdown = JogadorTab:AddDropdown({
+-- Dropdown de Seleção de Jogador para teleportar
+local teleportDropdown = JogadorTab:AddDropdown({
     Name = "Teleportar para Jogador",
     Options = {},
     Default = nil,
@@ -293,35 +293,29 @@ local playerDropdown = JogadorTab:AddDropdown({
     end
 })
 
--- Botão para Atualizar Lista de Jogadores
+-- Botão para Atualizar Lista de Jogadores para teleportar
 JogadorTab:AddButton({
     Name = "Atualizar Lista de Jogadores",
     Callback = function()
-        updatePlayerList(playerDropdown)
+        updatePlayerList(teleportDropdown)
         notify("Atualizar Lista", "Lista de jogadores atualizada!")
     end
 })
 
 -- Inicializar a Lista de Jogadores ao Carregar o Script
-updatePlayerList(playerDropdown)
+updatePlayerList(spectateDropdown)
+updatePlayerList(teleportDropdown)
 
 -- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
 game.Players.PlayerAdded:Connect(function()
-    updatePlayerList(playerDropdown)
+    updatePlayerList(spectateDropdown)
+    updatePlayerList(teleportDropdown)
 end)
 
 game.Players.PlayerRemoving:Connect(function()
-    updatePlayerList(playerDropdown)
+    updatePlayerList(spectateDropdown)
+    updatePlayerList(teleportDropdown)
 end)
-
--- Função de teleporte 
-JogadorTab:AddButton({
-    Name = "Teleporte 2",
-    Callback = function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
-        notify("Teleporte", "Teleporte ativado!")
-    end
-})
 
 -- Aba Troll
 local TrollTab = Window:MakeTab({
