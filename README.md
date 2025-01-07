@@ -190,26 +190,10 @@ local JogadorTab = Window:MakeTab({
     PremiumOnly = false
 })
 
--- Função para Espectar Jogador
-local function spectatePlayer(playerName)
-    local localPlayer = game.Players.LocalPlayer
-    local player = game.Players:FindFirstChild(playerName)
+local playerDropdown
+local EspectarConnection
 
-    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        workspace.CurrentCamera.CameraSubject = player.Character.HumanoidRootPart
-        notify("Espectar", "Espectando " .. playerName)
-    else
-        notify("Erro", "Jogador não encontrado.")
-    end
-end
-
--- Função para Parar de Espectar
-local function stopSpectating()
-    workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-    notify("Espectar", "Você parou de espectar.")
-end
-
--- Função para Atualizar Lista de Jogadores
+-- Função para atualizar a lista de jogadores no dropdown
 local function updatePlayerList(dropdown)
     local playerNames = {}
     for _, player in ipairs(game.Players:GetPlayers()) do
@@ -218,61 +202,61 @@ local function updatePlayerList(dropdown)
     dropdown:Refresh(playerNames, true)
 end
 
--- Criação do Dropdown para Espectar
-local EspectarDropdown = JogadorTab:AddDropdown({
-    Name = "Espectar Jogador",
+-- Função para começar a espectar o jogador
+local function spectatePlayer(playerName)
+    local localPlayer = game.Players.LocalPlayer
+    local player = game.Players:FindFirstChild(playerName)
+
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        workspace.CurrentCamera.CameraSubject = player.Character.HumanoidRootPart
+        notify("Espectador", "Você está agora espectando: " .. playerName)
+    else
+        notify("Erro", "Jogador não encontrado ou não tem HumanoidRootPart.")
+    end
+end
+
+-- Função para parar de espectar e voltar para o personagem local
+local function stopSpectating()
+    workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+    notify("Espectador", "Você parou de espectar e voltou ao seu personagem.")
+end
+
+-- Criação do Dropdown para escolher o jogador para espectar
+playerDropdown = JogadorTab:AddDropdown({
+    Name = "Selecione um Jogador",
     Options = {},
     Callback = function(selectedPlayer)
         spectatePlayer(selectedPlayer)
     end
 })
 
--- Função para teleportar para outro jogador
-local function teleportToPlayer(playerName)
-    local player = game.Players:FindFirstChild(playerName)
-    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        local character = game.Players.LocalPlayer.Character
-        if character then
-            character:MoveTo(player.Character.HumanoidRootPart.Position)
-            notify("Teleporte", "Teleportado para " .. playerName)
-        end
-    else
-        notify("Erro", "Jogador ou parte do jogador não encontrado.")
-    end
-end
-
--- Dropdown de Seleção de Jogador para teleportar
-local teleportDropdown = JogadorTab:AddDropdown({
-    Name = "Teleportar para Jogador",
-    Options = {},
-    Default = nil,
-    Callback = function(selectedPlayer)
-        teleportToPlayer(selectedPlayer)
-    end
-})
-
--- Botão para Atualizar Lista de Jogadores para teleportar
+-- Botão para Atualizar a Lista de Jogadores
 JogadorTab:AddButton({
     Name = "Atualizar Lista de Jogadores",
     Callback = function()
-        updatePlayerList(teleportDropdown)
+        updatePlayerList(playerDropdown)
         notify("Atualizar Lista", "Lista de jogadores atualizada!")
     end
 })
 
+-- Botão para Parar de Espectar
+JogadorTab:AddButton({
+    Name = "Parar de Espectar",
+    Callback = function()
+        stopSpectating()
+    end
+})
+
 -- Inicializar a Lista de Jogadores ao Carregar o Script
-updatePlayerList(EspectarDropdown)
-updatePlayerList(teleportDropdown)
+updatePlayerList(playerDropdown)
 
 -- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
 game.Players.PlayerAdded:Connect(function()
-    updatePlayerList(EspectarDropdown)
-    updatePlayerList(teleportDropdown)
+    updatePlayerList(playerDropdown)
 end)
 
 game.Players.PlayerRemoving:Connect(function()
-    updatePlayerList(EspectarDropdown)
-    updatePlayerList(teleportDropdown)
+    updatePlayerList(playerDropdown)
 end)
 
 -- Aba Troll
