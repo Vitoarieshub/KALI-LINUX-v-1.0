@@ -183,7 +183,7 @@ VisuaisTab:AddToggle({
     Callback = toggleFov
 })
 
--- Aba Jogador 
+-- Aba Jogador
 local JogadorTab = Window:MakeTab({
     Name = "Jogador",
     Icon = "rbxassetid://4483345998",
@@ -243,6 +243,77 @@ end)
 game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(playerDropdown)
 end)
+
+-- Função para espectar outro jogador
+local function spectatePlayer(playerName)
+    local localPlayer = game.Players.LocalPlayer
+    local player = game.Players:FindFirstChild(playerName)
+
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        -- Manter o personagem do jogador local em pé
+        local humanoid = localPlayer.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.PlatformStand = false
+            humanoid.Sit = false
+        end
+        
+        -- Desativar colisão do personagem local
+        for _, part in pairs(localPlayer.Character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false
+            end
+        end
+
+        -- Espectar o jogador selecionado
+        local camera = workspace.CurrentCamera
+        camera.CameraSubject = player.Character.HumanoidRootPart
+        notify("Espectar", "Você está espectando " .. playerName)
+    else
+        notify("Erro", "Jogador não encontrado.")
+    end
+end
+
+-- Função para parar de espectar
+local function stopSpectating()
+    local localPlayer = game.Players.LocalPlayer
+    local camera = workspace.CurrentCamera
+    camera.CameraSubject = localPlayer.Character:FindFirstChildOfClass("Humanoid")
+
+    -- Reativar colisão do personagem local
+    for _, part in pairs(localPlayer.Character:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.CanCollide = true
+        end
+    end
+
+    notify("Espectar", "Você parou de espectar.")
+end
+
+
+-- Dropdown de Seleção de Jogador
+local playerDropdown = JogadorTab:AddDropdown({
+    Name = "Espectar Jogador",
+    Options = {},
+    Default = nil,
+    Callback = function(selectedPlayer)
+        spectatePlayer(selectedPlayer)
+    end
+})
+
+-- Botão para Atualizar Lista de Jogadores
+JogadorTab:AddButton({
+    Name = "Atualizar Lista de Jogadores",
+    Callback = function()
+        updatePlayerList(playerDropdown)
+        notify("Atualizar Lista", "Lista de jogadores atualizada!")
+    end
+})
+
+-- Botão para Parar de Espectar
+JogadorTab:AddButton({
+    Name = "Parar de Espectar",
+    Callback = stopSpectating
+})
 
 -- Aba Troll
 local TrollTab = Window:MakeTab({
