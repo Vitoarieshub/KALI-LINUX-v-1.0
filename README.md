@@ -289,6 +289,54 @@ game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(playerDropdown)
 end)
 
+-- Função para teleportar para outro jogador
+local function teleportToPlayer(playerName)
+    local player = game.Players:FindFirstChild(playerName)
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            character:MoveTo(player.Character.HumanoidRootPart.Position)
+            notify("Teleporte", "Teleportado para " .. playerName)
+        end
+    else
+        notify("Erro", "Jogador ou parte do jogador não encontrado.")
+    end
+end
+
+-- Dropdown de Seleção de Jogador para teleportar
+local teleportDropdown = JogadorTab:AddDropdown({
+    Name = "Teleportar para Jogador",
+    Options = {},
+    Default = nil,
+    Callback = function(selectedPlayer)
+        teleportToPlayer(selectedPlayer)
+    end
+})
+
+-- Botão para Atualizar Lista de Jogadores para teleportar
+JogadorTab:AddButton({
+    Name = "Atualizar Lista de Jogadores",
+    Callback = function()
+        updatePlayerList(teleportDropdown)
+        notify("Atualizar Lista", "Lista de jogadores atualizada!")
+    end
+})
+
+-- Inicializar a Lista de Jogadores ao Carregar o Script
+updatePlayerList(spectateDropdown)
+updatePlayerList(teleportDropdown)
+
+-- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
+game.Players.PlayerAdded:Connect(function()
+    updatePlayerList(spectateDropdown)
+    updatePlayerList(teleportDropdown)
+end)
+
+game.Players.PlayerRemoving:Connect(function()
+    updatePlayerList(spectateDropdown)
+    updatePlayerList(teleportDropdown)
+end)
+
 JogadorTab:AddButton({
     Name = "Teleporte Gui",
     Callback = function()
