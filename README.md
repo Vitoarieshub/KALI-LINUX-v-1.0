@@ -183,74 +183,11 @@ VisuaIsTab:AddToggle({
     Callback = toggleFov
 })
 
--- Aba Jogador
+-- Aba Jogador 
 local JogadorTab = Window:MakeTab({
     Name = "Jogador",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
-})
-
--- Função para teleportar para outro jogador
-local function teleportToPlayer(playerName)
-    local player = game.Players:FindFirstChild(playerName)
-    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        local character = game.Players.LocalPlayer.Character
-        if character then
-            character:MoveTo(player.Character.HumanoidRootPart.Position)
-            notify("Teleporte", "Teleportado para " .. playerName)
-        end
-    else
-        notify("Erro", "Jogador ou parte do jogador não encontrado.")
-    end
-end
-
--- Atualizar Lista de Jogadores
-local function updatePlayerList(dropdown)
-    local playerNames = {}
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        table.insert(playerNames, player.Name)
-    end
-    dropdown:Refresh(playerNames, true)
-end
-
--- Dropdown de Seleção de Jogador
-local playerDropdown = JogadorTab:AddDropdown({
-    Name = "Teleportar para Jogador",
-    Options = {},
-    Default = nil,
-    Callback = function(selectedPlayer)
-        teleportToPlayer(selectedPlayer)
-    end
-})
-
--- Botão para Atualizar Lista de Jogadores
-JogadorTab:AddButton({
-    Name = "Atualizar Lista de Jogadores",
-    Callback = function()
-        updatePlayerList(playerDropdown)
-        notify("Atualizar Lista", "Lista de jogadores atualizada!")
-    end
-})
-
--- Inicializar a Lista de Jogadores ao Carregar o Script
-updatePlayerList(playerDropdown)
-
--- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
-game.Players.PlayerAdded:Connect(function()
-    updatePlayerList(playerDropdown)
-end)
-
-game.Players.PlayerRemoving:Connect(function()
-    updatePlayerList(playerDropdown)
-end)
-
--- Função de teleporte adicional
-JogadorTab:AddButton({
-    Name = "Teleporte 2",
-    Callback = function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
-        notify("Teleporte", "Teleporte ativado!")
-    end
 })
 
 -- Função para espectar outro jogador
@@ -298,13 +235,14 @@ local function stopSpectating()
     notify("Espectar", "Você parou de espectar.")
 end
 
--- Dropdown de Seleção de Jogador para Espectar
-local spectateDropdown = JogadorTab:AddDropdown({
+
+-- Dropdown de Seleção de Jogador
+local playerDropdown = JogadorTab:AddDropdown({
     Name = "Espectar Jogador",
     Options = {},
     Default = nil,
     Callback = function(selectedPlayer)
-        spectatePlayer(selectedPlayer)
+        espectarPlayer(selectedPlayer)
     end
 })
 
@@ -312,7 +250,7 @@ local spectateDropdown = JogadorTab:AddDropdown({
 JogadorTab:AddButton({
     Name = "Atualizar Lista de Jogadores",
     Callback = function()
-        updatePlayerList(spectateDropdown)
+        updatePlayerList(playerDropdown)
         notify("Atualizar Lista", "Lista de jogadores atualizada!")
     end
 })
@@ -323,8 +261,89 @@ JogadorTab:AddButton({
     Callback = stopSpectating
 })
 
--- Atualizar Lista de Jogadores ao Carregar o Script
-updatePlayerList(spectateDropdown)
+-- Atualizar Lista de Jogadores
+local function updatePlayerList(dropdown)
+    local playerNames = {}
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        table.insert(playerNames, player.Name)
+    end
+    dropdown:Refresh(playerNames, true)
+end
+
+-- Inicializar a Lista de Jogadores ao Carregar o Script
+updatePlayerList(playerDropdown)
+
+-- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
+game.Players.PlayerAdded:Connect(function()
+    updatePlayerList(playerDropdown)
+end)
+
+game.Players.PlayerRemoving:Connect(function()
+    updatePlayerList(playerDropdown)
+end)
+
+-- Função para teleportar para outro jogador
+local function teleportToPlayer(playerName)
+    local player = game.Players:FindFirstChild(playerName)
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            character:MoveTo(player.Character.HumanoidRootPart.Position)
+            notify("Teleporte", "Teleportado para " .. playerName)
+        end
+    else
+        notify("Erro", "Jogador ou parte do jogador não encontrado.")
+    end
+end
+
+-- Atualizar Lista de Jogadores
+local function updatePlayerList(dropdown)
+    local playerNames = {}
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        table.insert(playerNames, player.Name)
+    end
+    dropdown:Refresh(playerNames, true)
+end
+
+-- Dropdown de Seleção de Jogador
+local playerDropdown = JogadorTab:AddDropdown({
+    Name = "Teleportar para Jogador",
+    Options = {},
+    Default = nil,
+    Callback = function(selectedPlayer)
+        teleportToPlayer(selectedPlayer)
+    end
+})
+
+-- Botão para Atualizar Lista de Jogadores
+TeleportTab:AddButton({
+    Name = "Atualizar Lista de Jogadores",
+    Callback = function()
+        updatePlayerList(playerDropdown)
+        notify("Atualizar Lista", "Lista de jogadores atualizada!")
+    end
+})
+
+-- Inicializar a Lista de Jogadores ao Carregar o Script
+updatePlayerList(playerDropdown)
+
+-- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
+game.Players.PlayerAdded:Connect(function()
+    updatePlayerList(playerDropdown)
+end)
+
+game.Players.PlayerRemoving:Connect(function()
+    updatePlayerList(playerDropdown)
+end)
+
+-- Função de teleporte 
+JogadorTab:AddButton({
+    Name = "Teleporte 2",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
+        notify("Teleporte", "Teleporte ativado!")
+    end
+})
 
 -- Aba Troll
 local TrollTab = Window:MakeTab({
@@ -342,6 +361,7 @@ TrollTab:AddButton({
     end
 })
 
+-- Funções de Troll
 TrollTab:AddButton({
     Name = "Troll",
     Callback = function()
