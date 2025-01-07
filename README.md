@@ -218,7 +218,7 @@ end
 -- Função para parar de espectar e voltar para o personagem local
 local function stopSpectating()
     workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
-    notify("Espectador", "Você parou de espectar e voltou ao seu personagem.")
+    notify("Espectador", "Você parou de espectar ó jogador .")
 end
 
 -- Criação do Dropdown para escolher o jogador para espectar
@@ -280,7 +280,7 @@ local function teleportToPlayer(playerName)
             notify("Teleporte", "Teleportado para " .. playerName)
         end
     else
-        notify("Erro", "Jogador ou parte do jogador não encontrado.")
+        notify("Erro", "Jogador não encontrado.")
     end
 end
 
