@@ -235,7 +235,6 @@ local function stopSpectating()
     notify("Espectar", "Você parou de espectar.")
 end
 
-
 -- Dropdown de Seleção de Jogador
 local playerDropdown = JogadorTab:AddDropdown({
     Name = "Espectar Jogador",
