@@ -1,350 +1,349 @@
-local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+local OrionLib = loadstring(jogo:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 
-local Window = OrionLib:MakeWindow({
-    Name = "KALI LINUX",
-    HidePremium = false,
-    SaveConfig = true,
+Janela local = OrionLib:MakeWindow({
+    Nome = "KALI LINUX",
+    HidePremium = falso,
+    SaveConfig = verdadeiro,
     ConfigFolder = "KALILINUXConfig"
 })
 
 -- Função de Notificação
-local function notify(title, text)
+função local notificar(título, texto)
     OrionLib:MakeNotification({
-        Name = title,
-        Content = text,
-        Image = "rbxassetid://4483345998",
-        Time = 5
+        Nome = título,
+        Conteúdo = texto,
+        Imagem = "rbxassetid://4483345998",
+        Tempo = 5
     })
-end
+fim
 
 -- Aba Geral
-local GeralTab = Window:MakeTab({
-    Name = "Geral",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
+local GeralTab = Janela:CriarTab({
+    Nome = "Geral",
+    Ícone = "rbxassetid://4483345998",
+    PremiumOnly = falso
 })
 
 -- Função Fly
 GeralTab:AddButton({
-    Name = "Fly",
-    Callback = function()
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-AntiOder-Fly-STABLE-23736"))()
-        notify("Fly", "Fly ativado!")
-    end
+    Nome = "Mosca",
+    Retorno de chamada = função()
+        loadstring(jogo:HttpGet("https://rawscripts.net/raw/Universal-Script-AntiOder-Fly-STABLE-23736"))()
+        notificar("Voar", "Voar ativado!")
+    fim
 })
 
 -- Função Fly Car
 GeralTab:AddButton({
-    Name = "Fly Car",
-    Callback = function()
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
+    Nome = "Carro Voador",
+    Retorno de chamada = função()
+        loadstring(jogo:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
         notify("Fly Car", "Fly Car ativado!")
-    end
+    fim
 })
 
 -- Função Noclip
-local noclipConnection
-local function toggleNoclip(enable)
-    if enable then
-        if not noclipConnection then
-            noclipConnection = game:GetService("RunService").Stepped:Connect(function()
-                for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-                    if part:IsA("BasePart") then
-                        part.CanCollide = false
-                    end
-                end
-            end)
-        end
+Conexão local noclip
+função local toggleNoclip(enable)
+    se habilitar então
+        se não noclipConnection então
+            noclipConnection = jogo:GetService("RunService").Stepped:Connect(função()
+                para _, parte em pares(game.Players.LocalPlayer.Character:GetDescendants()) faça
+                    se parte:IsA("BasePart") então
+                        part.CanCollide = falso
+                    fim
+                fim
+            fim)
+        fim
         notify("Noclip", "Você pode atravessar paredes agora!")
-    else
-        if noclipConnection then
-            noclipConnection:Disconnect()
-            noclipConnection = nil
-        end
-        for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = true
-            end
-        end
-        notify("Noclip", "Travessa Paredes desativado.")
-    end
-end
+    outro
+        se noclipConnection então
+            noclipConnection:Desconectar()
+            noclipConnection = nulo
+        fim
+        para _, parte em pares(game.Players.LocalPlayer.Character:GetDescendants()) faça
+            se parte:IsA("BasePart") então
+                part.CanCollide = verdadeiro
+            fim
+        fim
+        notify("Noclip", "Travessa Paredes desativada.")
+    fim
+fim
 
 GeralTab:AddToggle({
-    Name = "Travessa Paredes",
-    Default = false,
-    Callback = toggleNoclip
+    Nome = "Travessa Paredes",
+    Padrão = falso,
+    Retorno de chamada = toggleNoclip
 })
 
 -- Função Pulo Infinito
-local jumpConnection
-local function toggleInfiniteJump(enable)
-    if enable then
-        if not jumpConnection then
-            jumpConnection = game:GetService("UserInputService").JumpRequest:Connect(function()
-                local player = game.Players.LocalPlayer
-                local character = player.Character or player.CharacterAdded:Wait()
-                local humanoid = character:WaitForChild("Humanoid")
-                humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-            end)
-        end
+conexão de salto local
+função local toggleInfiniteJump(habilitar)
+    se habilitar então
+        se não jumpConnection então
+            jumpConnection = jogo:GetService("UserInputService").JumpRequest:Connect(função()
+                jogador local = jogo.Jogadores.JogadorLocal
+                caractere local = player.Character ou player.CharacterAdded:Wait()
+                humanoide local = personagem:WaitForChild("Humanoide")
+                humanoide:ChangeState(Enum.HumanoidStateType.Jumping)
+            fim)
+        fim
         notify("Pulo Infinito", "Pulo infinito ativado!")
-    else
-        if jumpConnection then
-            jumpConnection:Disconnect()
-            jumpConnection = nil
-        end
+    outro
+        se jumpConnection então
+            jumpConnection:Desconectar()
+            jumpConnection = nulo
+        fim
         notify("Pulo Infinito", "Pulo infinito desativado.")
-    end
-end
+    fim
+fim
 
 GeralTab:AddToggle({
-    Name = "Pulo Infinito",
-    Default = false,
-    Callback = toggleInfiniteJump
+    Nome = "Pulo Infinito",
+    Padrão = falso,
+    Retorno de chamada = toggleInfiniteJump
 })
 
 -- Ajustar Altura do Pulo
 GeralTab:AddTextbox({
-    Name = "Altura do Pulo",
-    Default = "50",
-    TextDisappear = true,
-    Callback = function(value)
-        local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-        if humanoid then
-            humanoid.JumpPower = tonumber(value)
-            notify("Altura do Pulo", "Altura do Pulo ajustada para " .. value)
-        end
-    end
+    Nome = "Altura do Pulo",
+    Padrão = "50",
+    TextDisappear = verdadeiro,
+    Retorno de chamada = função(valor)
+        humanoide local = jogo.Jogadores.JogadorLocal.Personagem:FindFirstChild("Humanoide")
+        se humanóide então
+            humanoid.JumpPower = tonumber(valor)
+            notify("Altura do Pulo", "Altura do Pulo ajustada para " .. valor)
+        fim
+    fim
 })
 
 -- Ajustar Velocidade
 GeralTab:AddTextbox({
-    Name = "Velocidade",
-    Default = "20",
-    TextDisappear = true,
-    Callback = function(value)
-        local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-        if humanoid then
-            humanoid.WalkSpeed = tonumber(value)
-            notify("Velocidade", "Velocidade ajustada para " .. value)
-        end
-    end
+    Nome = "Velocidade",
+    Padrão = "20",
+    TextDisappear = verdadeiro,
+    Retorno de chamada = função(valor)
+        humanoide local = jogo.Jogadores.JogadorLocal.Personagem:FindFirstChild("Humanoide")
+        se humanóide então
+            humanoid.WalkSpeed = tonumber(valor)
+            notify("Velocidade", "Velocidade ajustada para " .. valor)
+        fim
+    fim
 })
 
--- Aba Visuais
-local VisuaIsTab = Window:MakeTab({
-    Name = "Visuais",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
+-- Aba Visual
+local VisuaIsTab = Janela:CriarTab({
+    Nome = "Visuais",
+    Ícone = "rbxassetid://4483345998",
+    PremiumOnly = falso
 })
 
 -- Funções de ESP
-VisuaIsTab:AddButton({
-    Name = "ESP Nome",
-    Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/rSUGN1fK"))()
+VisualizarTab:AdicionarBotão({
+    Nome = "ESP Nome",
+    Retorno de chamada = função()
+        loadstring(jogo:HttpGet("https://pastebin.com/raw/rSUGN1fK"))()
         notify("ESP", "ESP nome ativado!")
-    end
+    fim
 })
 
-VisuaIsTab:AddButton({
-    Name = "ESP Linhas",
-    Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/nnHbfvGW"))()
-        notify("ESP", "ESP linhas ativado!")
-    end
+VisualizarTab:AdicionarBotão({
+    Nome = "ESP Linhas",
+    Retorno de chamada = função()
+        loadstring(jogo:HttpGet("https://pastebin.com/raw/nnHbfvGW"))()
+        notify("ESP", "ESP linhas ativadas!")
+    fim
 })
 
 -- Função para ajustar FOV
-local function setFOV(newFOV)
-    if newFOV < 30 or newFOV > 120 then
+função local setFOV(newFOV)
+    se newFOV < 30 ou newFOV > 120 então
         notify("Erro", "FOV deve estar entre 30 e 120 graus.")
-        return
-    end
-    game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
-    notify("FOV", "FOV alterado para " .. newFOV .. " graus.")
-end
+        retornar
+    fim
+    jogo:GetService("Espaço de trabalho").CurrentCamera.FieldOfView = novoFOV
+    notify("Campo de Visão", "Campo de Visão alterado para " .. newFOV .. " graus.")
+fim
 
 -- Alternar Campo de Visão (FOV)
-local fovActive = false
-local function toggleFov(state)
-    fovActive = state
-    if fovActive then
-        setFOV(90)
-    else
-        setFOV(70)
-    end
-end
+local fovActive = falso
+função local toggleFov(estado)
+    fovActive = estado
+    se fovActive então
+        definirFOV(90)
+    outro
+        definirFOV(70)
+    fim
+fim
 
-VisuaIsTab:AddToggle({
-    Name = "Campo de Visão",
-    Default = false,
-    Callback = toggleFov
+VisualizarTab:AdicionarAlternar({
+    Nome = "Campo de Visão",
+    Padrão = falso,
+    Retorno de chamada = toggleFov
 })
 
 -- Aba Jogador
 local JogadorTab = Window:MakeTab({
-    Name = "Jogador",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
+    Nome = "Jogador",
+    Ícone = "rbxassetid://4483345998",
+    PremiumOnly = falso
 })
 
--- Função para espectar outro jogador
-local function spectatePlayer(playerName)
-    local localPlayer = game.Players.LocalPlayer
-    local player = game.Players:FindFirstChild(playerName)
+-- Função para Espectar outro jogador
+função local spectatePlayer(playerName)
+    local localPlayer = jogo.Jogadores.LocalPlayer
+    jogador local = jogo.Jogadores:FindFirstChild(playerName)
 
-    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        local humanoid = localPlayer.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.PlatformStand = false
-            humanoid.Sit = false
-        end
+    se jogador e jogador.Personagem e jogador.Personagem:FindFirstChild("HumanoidRootPart") então
+        humanoide local = localPlayer.Character:FindFirstChildOfClass("Humanoide")
+        se humanóide então
+            humanoid.PlatformStand = falso
+            humanoid.Sit = falso
+        fim
         
-        for _, part in pairs(localPlayer.Character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = false
-            end
-        end
+        para _, parte em pares(localPlayer.Character:GetDescendants()) faça
+            se parte:IsA("BasePart") então
+                part.CanCollide = falso
+            fim
+        fim
 
-        workspace.CurrentCamera.CameraSubject = player.Character.HumanoidRootPart
-        notify("Espectar", "Você está espectando " .. playerName)
-    else
+        espaço de trabalho.CurrentCamera.CameraSubject = jogador.Personagem.HumanoidRootPart
+        notify("Espectar", "Você está esperando " .. playerName)
+    outro
         notify("Erro", "Jogador não encontrado.")
-    end
-end
+    fim
+fim
 
-local function stopSpectating()
-    local localPlayer = game.Players.LocalPlayer
-    workspace.CurrentCamera.CameraSubject = localPlayer.Character:FindFirstChildOfClass("Humanoid")
+função local stopSpectating()
+    local localPlayer = jogo.Jogadores.LocalPlayer
+    espaço de trabalho.CurrentCamera.CameraSubject = localPlayer.Character:FindFirstChildOfClass("Humanoid")
 
-    for _, part in pairs(localPlayer.Character:GetDescendants()) do
-        if part:IsA("BasePart") then
-            part.CanCollide = true
-        end
-    end
+    para _, parte em pares(localPlayer.Character:GetDescendants()) faça
+        se parte:IsA("BasePart") então
+            part.CanCollide = verdadeiro
+        fim
+    fim
 
-    notify("Espectar", "Você parou de espectar.")
-end
+    notify("Espectar", "Você parou de Espectar.")
+fim
 
-local function updatePlayerList(dropdown)
-    local playerNames = {}
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        table.insert(playerNames, player.Name)
-    end
-    dropdown:Refresh(playerNames, true)
-end
+função local updatePlayerList(dropdown)
+    nomes de jogadores locais = {}
+    para _, jogador em ipairs(game.Players:GetPlayers()) faça
+        tabela.insert(playerNames, jogador.Nome)
+    fim
+    dropdown:Atualizar(playerNames, true)
+fim
 
-local playerDropdown = JogadorTab:AddDropdown({
-    Name = "Espectar Jogador",
-    Options = {},
-    Default = nil,
-    Callback = function(selectedPlayer)
-        spectatePlayer(selectedPlayer)
-    end
+playerDropdown local = JogadorTab:AddDropdown({
+    Nome = "Espectar Jogador",
+    Opções = {},
+    Padrão = nulo,
+    Retorno de chamada = função(jogador selecionado)
+        espectadorJogador(jogador selecionado)
+    fim
 })
 
 JogadorTab:AddButton({
     Name = "Atualizar Lista de Jogadores",
-    Callback = function()
-        updatePlayerList(playerDropdown)
+    Retorno de chamada = função()
+        atualizarPlayerList(playerDropdown)
         notify("Atualizar Lista", "Lista de jogadores atualizada!")
-    end
+    fim
 })
 
-JogadorTab:AddButton({
-    Name = "Parar de Espectar",
-    Callback = stopSpectating
+atualizarPlayerList(playerDropdown)
+
+jogo.Jogadores.JogadorAdicionado:Conectar(função()
+    atualizarPlayerList(playerDropdown)
+fim)
+
+jogo.Jogadores.JogadorRemovendo:Conectar(função()
+    atualizarPlayerList(playerDropdown)
+fim)
+
+local Jogador = Tab:AddSection({
+	Name = "Teleporte"
 })
 
-updatePlayerList(playerDropdown)
-
-game.Players.PlayerAdded:Connect(function()
-    updatePlayerList(playerDropdown)
-end)
-
-game.Players.PlayerRemoving:Connect(function()
-    updatePlayerList(playerDropdown)
-end)
-
-local function teleportToPlayer(playerName)
-    local player = game.Players:FindFirstChild(playerName)
-    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        local character = game.Players.LocalPlayer.Character
-        if character then
-            character:MoveTo(player.Character.HumanoidRootPart.Position)
-            notify("Teleporte", "Teleportado para " .. playerName)
-        end
-    else
+função local teleportToPlayer(playerName)
+    jogador local = jogo.Jogadores:FindFirstChild(playerName)
+    se jogador e jogador.Personagem e jogador.Personagem:FindFirstChild("HumanoidRootPart") então
+        personagem local = jogo.Jogadores.JogadorLocal.Personagem
+        se personagem então
+            personagem: MoveTo (jogador. Personagem. HumanoidRootPart. Posição)
+            notify("Teleporte", "Teletransportado para " .. playerName)
+        fim
+    outro
         notify("Erro", "Jogador ou parte do jogador não encontrado.")
-    end
-end
+    fim
+fim
 
-local playerTeleportDropdown = JogadorTab:AddDropdown({
-    Name = "Teleportar para Jogador",
-    Options = {},
-    Default = nil,
-    Callback = function(selectedPlayer)
-        teleportToPlayer(selectedPlayer)
-    end
+jogador localTeleportDropdown = JogadorTab:AddDropdown({
+    Name = "Teletransportar para Jogador",
+    Opções = {},
+    Padrão = nulo,
+    Retorno de chamada = função(jogador selecionado)
+        teleportToPlayer(jogador selecionado)
+    fim
 })
 
 JogadorTab:AddButton({
     Name = "Atualizar Lista de Jogadores",
-    Callback = function()
+    Retorno de chamada = função()
         updatePlayerList(playerTeleportDropdown)
         notify("Atualizar Lista", "Lista de jogadores atualizada!")
-    end
+    fim
 })
 
 updatePlayerList(playerTeleportDropdown)
 
-game.Players.PlayerAdded:Connect(function()
+jogo.Jogadores.JogadorAdicionado:Conectar(função()
     updatePlayerList(playerTeleportDropdown)
-end)
+fim)
 
-game.Players.PlayerRemoving:Connect(function()
+jogo.Jogadores.JogadorRemovendo:Conectar(função()
     updatePlayerList(playerTeleportDropdown)
-end)
+fim)
 
 -- Função de teleporte
 JogadorTab:AddButton({
-    Name = "Teleporte 2",
-    Callback = function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
+    Nome = "Teleporte 2",
+    Retorno de chamada = função()
+        loadstring(jogo:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
         notify("Teleporte", "Teleporte ativado!")
-    end
+    fim
 })
 
 -- Aba Troll
-local TrollTab = Window:MakeTab({
-    Name = "Troll",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
+local TrollTab = Janela:CriarTab({
+    Nome = "Troll",
+    Ícone = "rbxassetid://4483345998",
+    PremiumOnly = falso
 })
 
 -- Funções de Troll
-TrollTab:AddButton({
-    Name = "BringParts",
-    Callback = function()
+TrollTab:AdicionarBotão({
+    Nome = "BringParts",
+    Retorno de chamada = função()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
         notify("BringParts", "BringParts ativado!")
-    end
+    fim
 })
 
-TrollTab:AddButton({
-    Name = "Troll",
-    Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/38Jra00x"))()
+TrollTab:AdicionarBotão({
+    Nome = "Troll",
+    Retorno de chamada = função()
+        loadstring(jogo:HttpGet("https://pastebin.com/raw/38Jra00x"))()
         notify("Troll", "Troll ativado!")
-    end
+    fim
 })
 
-TrollTab:AddButton({
-    Name = "Chat Bypass",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
+TrollTab:AdicionarBotão({
+    Nome = "Ignorar bate-papo",
+    Retorno de chamada = função()
+        loadstring(jogo:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
         notify("Chat Bypass", "Chat Bypass ativado!")
-    end
+    fim
 })
