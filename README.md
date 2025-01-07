@@ -132,9 +132,9 @@ GeralTab:AddTextbox({
     end
 })
 
--- Aba VisuaIs
+-- Aba Visuais
 local VisuaIsTab = Window:MakeTab({
-    Name = "VisuaIs",
+    Name = "Visuais",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
@@ -158,8 +158,8 @@ VisuaIsTab:AddButton({
 
 -- Função para ajustar FOV
 local function setFOV(newFOV)
-    if newFOV < 30 or newFOV > 320 then
-        notify("Erro", "FOV deve estar entre 30 e 320 graus.")
+    if newFOV < 30 or newFOV > 120 then
+        notify("Erro", "FOV deve estar entre 30 e 120 graus.")
         return
     end
     game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
@@ -183,7 +183,7 @@ VisuaIsTab:AddToggle({
     Callback = toggleFov
 })
 
--- Aba Jogador 
+-- Aba Jogador
 local JogadorTab = Window:MakeTab({
     Name = "Jogador",
     Icon = "rbxassetid://4483345998",
@@ -196,36 +196,29 @@ local function spectatePlayer(playerName)
     local player = game.Players:FindFirstChild(playerName)
 
     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        -- Manter o personagem do jogador local em pé
         local humanoid = localPlayer.Character:FindFirstChildOfClass("Humanoid")
         if humanoid then
             humanoid.PlatformStand = false
             humanoid.Sit = false
         end
         
-        -- Desativar colisão do personagem local
         for _, part in pairs(localPlayer.Character:GetDescendants()) do
             if part:IsA("BasePart") then
                 part.CanCollide = false
             end
         end
 
-        -- Espectar o jogador selecionado
-        local camera = workspace.CurrentCamera
-        camera.CameraSubject = player.Character.HumanoidRootPart
+        workspace.CurrentCamera.CameraSubject = player.Character.HumanoidRootPart
         notify("Espectar", "Você está espectando " .. playerName)
     else
         notify("Erro", "Jogador não encontrado.")
     end
 end
 
--- Função para parar de espectar
 local function stopSpectating()
     local localPlayer = game.Players.LocalPlayer
-    local camera = workspace.CurrentCamera
-    camera.CameraSubject = localPlayer.Character:FindFirstChildOfClass("Humanoid")
+    workspace.CurrentCamera.CameraSubject = localPlayer.Character:FindFirstChildOfClass("Humanoid")
 
-    -- Reativar colisão do personagem local
     for _, part in pairs(localPlayer.Character:GetDescendants()) do
         if part:IsA("BasePart") then
             part.CanCollide = true
@@ -235,33 +228,6 @@ local function stopSpectating()
     notify("Espectar", "Você parou de espectar.")
 end
 
-
--- Dropdown de Seleção de Jogador
-local playerDropdown = JogadorTab:AddDropdown({
-    Name = "Espectar Jogador",
-    Options = {},
-    Default = nil,
-    Callback = function(selectedPlayer)
-        espectarPlayer(selectedPlayer)
-    end
-})
-
--- Botão para Atualizar Lista de Jogadores
-JogadorTab:AddButton({
-    Name = "Atualizar Lista de Jogadores",
-    Callback = function()
-        updatePlayerList(playerDropdown)
-        notify("Atualizar Lista", "Lista de jogadores atualizada!")
-    end
-})
-
--- Botão para Parar de Espectar
-JogadorTab:AddButton({
-    Name = "Parar de Espectar",
-    Callback = stopSpectating
-})
-
--- Atualizar Lista de Jogadores
 local function updatePlayerList(dropdown)
     local playerNames = {}
     for _, player in ipairs(game.Players:GetPlayers()) do
@@ -270,10 +236,30 @@ local function updatePlayerList(dropdown)
     dropdown:Refresh(playerNames, true)
 end
 
--- Inicializar a Lista de Jogadores ao Carregar o Script
+local playerDropdown = JogadorTab:AddDropdown({
+    Name = "Espectar Jogador",
+    Options = {},
+    Default = nil,
+    Callback = function(selectedPlayer)
+        spectatePlayer(selectedPlayer)
+    end
+})
+
+JogadorTab:AddButton({
+    Name = "Atualizar Lista de Jogadores",
+    Callback = function()
+        updatePlayerList(playerDropdown)
+        notify("Atualizar Lista", "Lista de jogadores atualizada!")
+    end
+})
+
+JogadorTab:AddButton({
+    Name = "Parar de Espectar",
+    Callback = stopSpectating
+})
+
 updatePlayerList(playerDropdown)
 
--- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
 game.Players.PlayerAdded:Connect(function()
     updatePlayerList(playerDropdown)
 end)
@@ -282,7 +268,6 @@ game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(playerDropdown)
 end)
 
--- Função para teleportar para outro jogador
 local function teleportToPlayer(playerName)
     local player = game.Players:FindFirstChild(playerName)
     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
@@ -296,17 +281,7 @@ local function teleportToPlayer(playerName)
     end
 end
 
--- Atualizar Lista de Jogadores
-local function updatePlayerList(dropdown)
-    local playerNames = {}
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        table.insert(playerNames, player.Name)
-    end
-    dropdown:Refresh(playerNames, true)
-end
-
--- Dropdown de Seleção de Jogador
-local playerDropdown = JogadorTab:AddDropdown({
+local playerTeleportDropdown = JogadorTab:AddDropdown({
     Name = "Teleportar para Jogador",
     Options = {},
     Default = nil,
@@ -315,28 +290,25 @@ local playerDropdown = JogadorTab:AddDropdown({
     end
 })
 
--- Botão para Atualizar Lista de Jogadores
-TeleportTab:AddButton({
+JogadorTab:AddButton({
     Name = "Atualizar Lista de Jogadores",
     Callback = function()
-        updatePlayerList(playerDropdown)
+        updatePlayerList(playerTeleportDropdown)
         notify("Atualizar Lista", "Lista de jogadores atualizada!")
     end
 })
 
--- Inicializar a Lista de Jogadores ao Carregar o Script
-updatePlayerList(playerDropdown)
+updatePlayerList(playerTeleportDropdown)
 
--- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
 game.Players.PlayerAdded:Connect(function()
-    updatePlayerList(playerDropdown)
+    updatePlayerList(playerTeleportDropdown)
 end)
 
 game.Players.PlayerRemoving:Connect(function()
-    updatePlayerList(playerDropdown)
+    updatePlayerList(playerTeleportDropdown)
 end)
 
--- Função de teleporte 
+-- Função de teleporte
 JogadorTab:AddButton({
     Name = "Teleporte 2",
     Callback = function()
@@ -361,7 +333,6 @@ TrollTab:AddButton({
     end
 })
 
--- Funções de Troll
 TrollTab:AddButton({
     Name = "Troll",
     Callback = function()
@@ -370,7 +341,6 @@ TrollTab:AddButton({
     end
 })
 
--- Função Chat Bypass
 TrollTab:AddButton({
     Name = "Chat Bypass",
     Callback = function()
