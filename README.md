@@ -7,6 +7,7 @@ local Window = OrionLib:MakeWindow({
     ConfigFolder = "KALILINUXConfig"
 })
 
+-- Função de Notificação
 local function notify(title, text)
     OrionLib:MakeNotification({
         Name = title,
@@ -16,12 +17,14 @@ local function notify(title, text)
     })
 end
 
+-- Aba Geral
 local GeralTab = Window:MakeTab({
     Name = "Geral",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
+-- Função Fly
 GeralTab:AddButton({
     Name = "Fly",
     Callback = function()
@@ -30,6 +33,7 @@ GeralTab:AddButton({
     end
 })
 
+-- Função Fly Car
 GeralTab:AddButton({
     Name = "Fly Car",
     Callback = function()
@@ -38,6 +42,7 @@ GeralTab:AddButton({
     end
 })
 
+-- Função Noclip
 local noclipConnection
 local function toggleNoclip(enable)
     if enable then
@@ -71,6 +76,7 @@ GeralTab:AddToggle({
     Callback = toggleNoclip
 })
 
+-- Função Pulo Infinito
 local jumpConnection
 local function toggleInfiniteJump(enable)
     if enable then
@@ -98,6 +104,7 @@ GeralTab:AddToggle({
     Callback = toggleInfiniteJump
 })
 
+-- Ajustar Altura do Pulo
 GeralTab:AddTextbox({
     Name = "Altura do Pulo",
     Default = "50",
@@ -111,6 +118,7 @@ GeralTab:AddTextbox({
     end
 })
 
+-- Ajustar Velocidade
 GeralTab:AddTextbox({
     Name = "Velocidade",
     Default = "20",
@@ -124,12 +132,14 @@ GeralTab:AddTextbox({
     end
 })
 
+-- Aba Visuais
 local VisuaisTab = Window:MakeTab({
     Name = "Visuais",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
+-- Funções de ESP
 VisuaisTab:AddButton({
     Name = "ESP Nome",
     Callback = function()
@@ -146,6 +156,7 @@ VisuaisTab:AddButton({
     end
 })
 
+-- Função para ajustar FOV
 local function setFOV(newFOV)
     if newFOV < 30 or newFOV > 300 then
         notify("Erro", "FOV deve estar entre 30 e 300 graus.")
@@ -155,6 +166,7 @@ local function setFOV(newFOV)
     notify("Campo de Visão", "Campo de Visão alterado para " .. newFOV .. " graus.")
 end
 
+-- Alternar Campo de Visão (FOV)
 local fovActive = false
 local function toggleFov(state)
     fovActive = state
@@ -171,60 +183,51 @@ VisuaisTab:AddToggle({
     Callback = toggleFov
 })
 
+-- Aba Jogador
 local JogadorTab = Window:MakeTab({
     Name = "Jogador",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
+-- Função para Espectar Jogador
 local function spectatePlayer(playerName)
     local localPlayer = game.Players.LocalPlayer
     local player = game.Players:FindFirstChild(playerName)
 
     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        local humanoid = localPlayer.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.PlatformStand = false
-            humanoid.Sit = false
-        end
-        
-        for _, part in pairs(localPlayer.Character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = false
-            end
-        end
-
-        local camera = workspace.CurrentCamera
-        camera.CameraSubject = player.Character.HumanoidRootPart
-        notify("Espectar", "Você está espectando " .. playerName)
+        workspace.CurrentCamera.CameraSubject = player.Character.HumanoidRootPart
+        notify("Espectar", "Espectando " .. playerName)
     else
         notify("Erro", "Jogador não encontrado.")
     end
 end
 
+-- Função para Parar de Espectar
 local function stopSpectating()
-    local localPlayer = game.Players.LocalPlayer
-    local camera = workspace.CurrentCamera
-    camera.CameraSubject = localPlayer.Character:FindFirstChildOfClass("Humanoid")
-
-    for _, part in pairs(localPlayer.Character:GetDescendants()) do
-        if part:IsA("BasePart") then
-            part.CanCollide = true
-        end
-    end
-
+    workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
     notify("Espectar", "Você parou de espectar.")
 end
 
-local playerDropdown = JogadorTab:AddDropdown({
+-- Função para Atualizar Lista de Jogadores
+local function updatePlayerList(dropdown)
+    local playerNames = {}
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        table.insert(playerNames, player.Name)
+    end
+    dropdown:Refresh(playerNames, true)
+end
+
+-- Criação do Dropdown para Espectar
+local EspectarDropdown = JogadorTab:AddDropdown({
     Name = "Espectar Jogador",
     Options = {},
-    Default = nil,
     Callback = function(selectedPlayer)
         spectatePlayer(selectedPlayer)
     end
 })
 
+-- Função para teleportar para outro jogador
 local function teleportToPlayer(playerName)
     local player = game.Players:FindFirstChild(playerName)
     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
@@ -238,24 +241,7 @@ local function teleportToPlayer(playerName)
     end
 end
 
-local function updatePlayerList(dropdown)
-    local playerNames = {}
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        table.insert(playerNames, player.Name)
-    end
-    dropdown:Refresh(playerNames, true)
-end
-
-updatePlayerList(playerDropdown)
-
-game.Players.PlayerAdded:Connect(function()
-    updatePlayerList(playerDropdown)
-end)
-
-game.Players.PlayerRemoving:Connect(function()
-    updatePlayerList(playerDropdown)
-end)
-
+-- Dropdown de Seleção de Jogador para teleportar
 local teleportDropdown = JogadorTab:AddDropdown({
     Name = "Teleportar para Jogador",
     Options = {},
@@ -265,6 +251,7 @@ local teleportDropdown = JogadorTab:AddDropdown({
     end
 })
 
+-- Botão para Atualizar Lista de Jogadores para teleportar
 JogadorTab:AddButton({
     Name = "Atualizar Lista de Jogadores",
     Callback = function()
@@ -273,19 +260,22 @@ JogadorTab:AddButton({
     end
 })
 
-updatePlayerList(playerDropdown)
+-- Inicializar a Lista de Jogadores ao Carregar o Script
+updatePlayerList(EspectarDropdown)
 updatePlayerList(teleportDropdown)
 
+-- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
 game.Players.PlayerAdded:Connect(function()
-    updatePlayerList(playerDropdown)
+    updatePlayerList(EspectarDropdown)
     updatePlayerList(teleportDropdown)
 end)
 
 game.Players.PlayerRemoving:Connect(function()
-    updatePlayerList(playerDropdown)
+    updatePlayerList(EspectarDropdown)
     updatePlayerList(teleportDropdown)
 end)
 
+-- Aba Troll
 local TrollTab = Window:MakeTab({
     Name = "Troll",
     Icon = "rbxassetid://4483345998",
