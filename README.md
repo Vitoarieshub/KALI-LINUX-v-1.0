@@ -28,7 +28,7 @@ local GeralTab = Window:MakeTab({
 GeralTab:AddButton({
     Name = "Fly",
     Callback = function()
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-AntiOder-Fly-STABLE-23736"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Vitoarieshub/Fly-universal-/refs/heads/main/README.md"))()
         notify("Fly", "Fly ativado!")
     end
 })
