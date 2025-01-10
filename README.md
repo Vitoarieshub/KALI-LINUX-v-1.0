@@ -183,6 +183,87 @@ VisuaisTab:AddToggle({
     Callback = toggleFov
 })
 
+-- Adicionando um toggle para o ESP de nome
+Tabs.Main:AddToggle("esp_nome", {
+    Title = "ESP Nome",
+    Description = "Ativar/desativar ESP com nomes dos jogadores",
+    Default = false,
+    Callback = function(ativar)
+        alternarEstadoESP(ativar)
+    end
+})
+
+-- Função para criar ESP com efeito RGB para um jogador
+local function criarESP(jogador)
+    if jogador.Character and jogador.Character:FindFirstChild("Head") then
+        local head = jogador.Character.Head
+        local espNome = Instance.new("BillboardGui", head)
+        espNome.Name = "ESP"
+        espNome.Size = UDim2.new(0, 100, 0, 25) -- Tamanho menor
+        espNome.AlwaysOnTop = true
+        espNome.Adornee = head
+
+        local texto = Instance.new("TextLabel", espNome)
+        texto.Size = UDim2.new(1, 0, 1, 0)
+        texto.Text = jogador.Name
+        texto.BackgroundTransparency = 1
+        texto.TextScaled = true
+        texto.Font = Enum.Font.SourceSans
+        texto.TextStrokeTransparency = 0.5 -- Bordas para melhor visibilidade
+
+        -- Atualizar a cor do texto para o efeito RGB
+        spawn(function()
+            while espNome.Parent do
+                for i = 0, 1, 0.01 do
+                    texto.TextColor3 = Color3.fromHSV(i, 1, 1)
+                    wait(0.1)
+                end
+            end
+        end)
+    end
+end
+
+-- Função para remover ESP de um jogador
+local function removerESP(jogador)
+    if jogador.Character and jogador.Character:FindFirstChild("Head") and jogador.Character.Head:FindFirstChild("ESP") then
+        jogador.Character.Head.ESP:Destroy()
+    end
+end
+
+-- Função para alternar ESP para todos os jogadores
+local function alternarESP(ativar)
+    for _, jogador in ipairs(game.Players:GetPlayers()) do
+        if ativar then
+            criarESP(jogador)
+        else
+            removerESP(jogador)
+        end
+    end
+end
+
+-- Adicionar ouvintes para novos jogadores
+game.Players.PlayerAdded:Connect(function(jogador)
+    if espAtivo then
+        criarESP(jogador)
+    end
+end)
+
+-- Adicionar ouvintes para jogadores que saem
+game.Players.PlayerRemoving:Connect(removerESP)
+
+-- Variável para controlar o estado do ESP
+local espAtivo = false
+
+-- Função para alternar o estado do ESP
+local function alternarEstadoESP(ativar)
+    espAtivo = ativar
+    alternarESP(espAtivo)
+    print(espAtivo and "ESP ativado." or "ESP desativado.")
+end
+
+-- Teste de alternar ESP
+alternarEstadoESP(false)  -- Inicialmente desativado
+
 -- Aba Jogador
 local JogadorTab = Window:MakeTab({
     Name = "Jogador",
@@ -315,6 +396,32 @@ game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(teleportDropdown)
 end)
 
+-- Tab: 
+Tabs.Jogador:AddParagraph({ Title = "Resetar", Content = "Fusão Atualizada" })
+
+-- Botão para resetar o personagem
+JogadorTab:AddButton({
+    Name = "Resetar Personagem",
+    Callback = function()
+        resetCharacter()
+        OrionLib:MakeNotification({
+            Name = "Reset",
+            Content = "Seu personagem foi resetado!",
+            Image = "rbxassetid://4483345998",
+            Time = 5
+        })
+    end
+})
+
+-- Função para resetar o personagem
+local function resetCharacter()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+
+    -- Reseta o personagem do jogador
+    character:BreakJoints()
+end
+
 -- Aba Troll
 local TrollTab = Window:MakeTab({
     Name = "Troll",
@@ -323,18 +430,18 @@ local TrollTab = Window:MakeTab({
 })
 
 TrollTab:AddButton({
-    Name = "BringParts",
-    Callback = function()
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
-        notify("BringParts", "BringParts ativado!")
-    end
-})
-
-TrollTab:AddButton({
     Name = "Troll",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/38Jra00x"))()
         notify("Troll", "Troll ativado!")
+    end
+})
+
+TrollTab:AddButton({
+    Name = "BringParts",
+    Callback = function()
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
+        notify("BringParts", "BringParts ativado!")
     end
 })
 
