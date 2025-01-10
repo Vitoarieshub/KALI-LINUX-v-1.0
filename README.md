@@ -183,6 +183,87 @@ VisuaisTab:AddToggle({
     Callback = toggleFov
 })
 
+-- Adicionando um toggle para o ESP de nome
+Tabs.Main:AddToggle("esp_nome", {
+    Title = "ESP Nome",
+    Description = "Ativar/desativar ESP com nomes dos jogadores",
+    Default = false,
+    Callback = function(ativar)
+        alternarEstadoESP(ativar)
+    end
+})
+
+-- Função para criar ESP com efeito RGB para um jogador
+local function criarESP(jogador)
+    if jogador.Character and jogador.Character:FindFirstChild("Head") then
+        local head = jogador.Character.Head
+        local espNome = Instance.new("BillboardGui", head)
+        espNome.Name = "ESP"
+        espNome.Size = UDim2.new(0, 100, 0, 25) -- Tamanho menor
+        espNome.AlwaysOnTop = true
+        espNome.Adornee = head
+
+        local texto = Instance.new("TextLabel", espNome)
+        texto.Size = UDim2.new(1, 0, 1, 0)
+        texto.Text = jogador.Name
+        texto.BackgroundTransparency = 1
+        texto.TextScaled = true
+        texto.Font = Enum.Font.SourceSans
+        texto.TextStrokeTransparency = 0.5 -- Bordas para melhor visibilidade
+
+        -- Atualizar a cor do texto para o efeito RGB
+        spawn(function()
+            while espNome.Parent do
+                for i = 0, 1, 0.01 do
+                    texto.TextColor3 = Color3.fromHSV(i, 1, 1)
+                    wait(0.1)
+                end
+            end
+        end)
+    end
+end
+
+-- Função para remover ESP de um jogador
+local function removerESP(jogador)
+    if jogador.Character and jogador.Character:FindFirstChild("Head") and jogador.Character.Head:FindFirstChild("ESP") then
+        jogador.Character.Head.ESP:Destroy()
+    end
+end
+
+-- Função para alternar ESP para todos os jogadores
+local function alternarESP(ativar)
+    for _, jogador in ipairs(game.Players:GetPlayers()) do
+        if ativar then
+            criarESP(jogador)
+        else
+            removerESP(jogador)
+        end
+    end
+end
+
+-- Adicionar ouvintes para novos jogadores
+game.Players.PlayerAdded:Connect(function(jogador)
+    if espAtivo then
+        criarESP(jogador)
+    end
+end)
+
+-- Adicionar ouvintes para jogadores que saem
+game.Players.PlayerRemoving:Connect(removerESP)
+
+-- Variável para controlar o estado do ESP
+local espAtivo = false
+
+-- Função para alternar o estado do ESP
+local function alternarEstadoESP(ativar)
+    espAtivo = ativar
+    alternarESP(espAtivo)
+    print(espAtivo and "ESP ativado." or "ESP desativado.")
+end
+
+-- Teste de alternar ESP
+alternarEstadoESP(false)  -- Inicialmente desativado
+
 -- Aba Jogador
 local JogadorTab = Window:MakeTab({
     Name = "Jogador",
@@ -218,10 +299,10 @@ end
 -- Função para parar de assistir e voltar para o personagem local
 local function stopSpectating()
     workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
-    notify("Espectador", "Você parou de Espectar o jogador.")
+    notify("Espectador", "Você parou de Espectar ó jogador.")
 end
 
--- Criação do Dropdown para escolher o jogador para assistir
+-- Criação do Dropdown para escolher o jogador para espectar 
 playerDropdown = JogadorTab:AddDropdown({
     Name = "Espectar Jogador",
     Options = {},
@@ -239,13 +320,81 @@ JogadorTab:AddButton({
     end
 })
 
--- Botão para Parar de Assistir
+-- Botão para Parar de Espectar 
 JogadorTab:AddButton({
     Name = "Parar de Espectar",
     Callback = function()
         stopSpectating()
     end
 })
+
+-- Inicializar a Lista de Jogadores ao Carregar o Script
+updatePlayerList(playerDropdown)
+
+-- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
+game.Players.PlayerAdded:Connect(function()
+    updatePlayerList(playerDropdown)
+end)
+
+game.Players.PlayerRemoving:Connect(function()
+    updatePlayerList(playerDropdown)
+end)
+
+local teleportDropdown
+
+-- Função para atualizar a lista de jogadores no dropdown
+local function updatePlayerList(dropdown)
+    local playerNames = {}
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        table.insert(playerNames, player.Name)
+    end
+    dropdown:Refresh(playerNames, true)
+end
+
+-- Função para teleportar para outro jogador
+local function teleportToPlayer(playerName)
+    local player = game.Players:FindFirstChild(playerName)
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            character:MoveTo(player.Character.HumanoidRootPart.Position)
+            notify("Teleporte", "Teleportado para " .. playerName)
+        end
+    else
+        notify("Erro", "Jogador não encontrado.")
+    end
+end
+
+-- Dropdown de Seleção de Jogador para teleportar
+teleportDropdown = JogadorTab:AddDropdown({
+    Name = "Teleportar para Jogador",
+    Options = {},
+    Default = nil,
+    Callback = function(selectedPlayer)
+        teleportToPlayer(selectedPlayer)
+    end
+})
+
+-- Botão para Atualizar Lista de Jogadores
+JogadorTab:AddButton({
+    Name = "Atualizar Lista de Jogadores",
+    Callback = function()
+        updatePlayerList(teleportDropdown)
+        notify("Atualizar Lista", "Lista de jogadores atualizada!")
+    end
+})
+
+-- Inicializar a Lista de Jogadores ao Carregar o Script
+updatePlayerList(teleportDropdown)
+
+-- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
+game.Players.PlayerAdded:Connect(function()
+    updatePlayerList(teleportDropdown)
+end)
+
+game.Players.PlayerRemoving:Connect(function()
+    updatePlayerList(teleportDropdown)
+end)
 
 -- Aba Troll
 local TrollTab = Window:MakeTab({
