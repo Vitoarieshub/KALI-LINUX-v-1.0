@@ -17,15 +17,15 @@ local function notify(title, text)
     })
 end
 
--- Aba Geral
-local GeralTab = Window:MakeTab({
-    Name = "Geral",
+-- Aba Início
+local InícioTab = Window:MakeTab({
+    Name = "Início",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
 -- Função Fly
-GeralTab:AddButton({
+InícioTab:AddButton({
     Name = "Fly",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Vitoarieshub/Fly-universal-/refs/heads/main/README.md"))()
@@ -34,7 +34,7 @@ GeralTab:AddButton({
 })
 
 -- Função Fly Car
-GeralTab:AddButton({
+InícioTab:AddButton({
     Name = "Fly Car",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
@@ -70,7 +70,7 @@ local function toggleNoclip(enable)
     end
 end
 
-GeralTab:AddToggle({
+InícioTab:AddToggle({
     Name = "Travessa Paredes",
     Default = false,
     Callback = toggleNoclip
@@ -98,7 +98,7 @@ local function toggleInfiniteJump(enable)
     end
 end
 
-GeralTab:AddToggle({
+InícioTab:AddToggle({
     Name = "Pulo Infinito",
     Default = false,
     Callback = toggleInfiniteJump
@@ -119,7 +119,7 @@ GeralTab:AddTextbox({
 })
 
 -- Ajustar Velocidade
-GeralTab:AddTextbox({
+InícioTab:AddTextbox({
     Name = "Velocidade",
     Default = "20",
     TextDisappear = true,
@@ -183,87 +183,6 @@ VisuaisTab:AddToggle({
     Callback = toggleFov
 })
 
--- Adicionando um toggle para o ESP de nome
-Tabs.Main:AddToggle("esp_nome", {
-    Title = "ESP Nome",
-    Description = "Ativar/desativar ESP com nomes dos jogadores",
-    Default = false,
-    Callback = function(ativar)
-        alternarEstadoESP(ativar)
-    end
-})
-
--- Função para criar ESP com efeito RGB para um jogador
-local function criarESP(jogador)
-    if jogador.Character and jogador.Character:FindFirstChild("Head") then
-        local head = jogador.Character.Head
-        local espNome = Instance.new("BillboardGui", head)
-        espNome.Name = "ESP"
-        espNome.Size = UDim2.new(0, 100, 0, 25) -- Tamanho menor
-        espNome.AlwaysOnTop = true
-        espNome.Adornee = head
-
-        local texto = Instance.new("TextLabel", espNome)
-        texto.Size = UDim2.new(1, 0, 1, 0)
-        texto.Text = jogador.Name
-        texto.BackgroundTransparency = 1
-        texto.TextScaled = true
-        texto.Font = Enum.Font.SourceSans
-        texto.TextStrokeTransparency = 0.5 -- Bordas para melhor visibilidade
-
-        -- Atualizar a cor do texto para o efeito RGB
-        spawn(function()
-            while espNome.Parent do
-                for i = 0, 1, 0.01 do
-                    texto.TextColor3 = Color3.fromHSV(i, 1, 1)
-                    wait(0.1)
-                end
-            end
-        end)
-    end
-end
-
--- Função para remover ESP de um jogador
-local function removerESP(jogador)
-    if jogador.Character and jogador.Character:FindFirstChild("Head") and jogador.Character.Head:FindFirstChild("ESP") then
-        jogador.Character.Head.ESP:Destroy()
-    end
-end
-
--- Função para alternar ESP para todos os jogadores
-local function alternarESP(ativar)
-    for _, jogador in ipairs(game.Players:GetPlayers()) do
-        if ativar then
-            criarESP(jogador)
-        else
-            removerESP(jogador)
-        end
-    end
-end
-
--- Adicionar ouvintes para novos jogadores
-game.Players.PlayerAdded:Connect(function(jogador)
-    if espAtivo then
-        criarESP(jogador)
-    end
-end)
-
--- Adicionar ouvintes para jogadores que saem
-game.Players.PlayerRemoving:Connect(removerESP)
-
--- Variável para controlar o estado do ESP
-local espAtivo = false
-
--- Função para alternar o estado do ESP
-local function alternarEstadoESP(ativar)
-    espAtivo = ativar
-    alternarESP(espAtivo)
-    print(espAtivo and "ESP ativado." or "ESP desativado.")
-end
-
--- Teste de alternar ESP
-alternarEstadoESP(false)  -- Inicialmente desativado
-
 -- Aba Jogador
 local JogadorTab = Window:MakeTab({
     Name = "Jogador",
@@ -283,26 +202,26 @@ local function updatePlayerList(dropdown)
     dropdown:Refresh(playerNames, true)
 end
 
--- Função para começar a assistir o jogador, focando na cabeça
+-- Função para começar a espectar o jogador
 local function spectatePlayer(playerName)
     local localPlayer = game.Players.LocalPlayer
     local player = game.Players:FindFirstChild(playerName)
 
-    if player and player.Character and player.Character:FindFirstChild("Head") then
-        workspace.CurrentCamera.CameraSubject = player.Character.Head
-        notify("Espectador", "Você está agora assistindo: " .. playerName)
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        workspace.CurrentCamera.CameraSubject = player.Character.HumanoidRootPart
+        notify("Espectador", "Você está agora espectando: " .. playerName)
     else
-        notify("Erro", "Jogador não encontrado.")
+        notify("Erro", "Jogador não encontrado ou não tem HumanoidRootPart.")
     end
 end
 
--- Função para parar de assistir e voltar para o personagem local
+-- Função para parar de espectar e voltar para o personagem local
 local function stopSpectating()
     workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
-    notify("Espectador", "Você parou de Espectar ó jogador.")
+    notify("Espectador", "Você parou de espectar ó jogador .")
 end
 
--- Criação do Dropdown para escolher o jogador para espectar 
+-- Criação do Dropdown para escolher o jogador para espectar
 playerDropdown = JogadorTab:AddDropdown({
     Name = "Espectar Jogador",
     Options = {},
@@ -320,7 +239,7 @@ JogadorTab:AddButton({
     end
 })
 
--- Botão para Parar de Espectar 
+-- Botão para Parar de Espectar
 JogadorTab:AddButton({
     Name = "Parar de Espectar",
     Callback = function()
@@ -404,18 +323,18 @@ local TrollTab = Window:MakeTab({
 })
 
 TrollTab:AddButton({
-    Name = "Troll",
-    Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/38Jra00x"))()
-        notify("Troll", "Troll ativado!")
-    end
-})
-
-TrollTab:AddButton({
     Name = "BringParts",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
         notify("BringParts", "BringParts ativado!")
+    end
+})
+
+TrollTab:AddButton({
+    Name = "Troll",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/38Jra00x"))()
+        notify("Troll", "Troll ativado!")
     end
 })
 
