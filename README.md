@@ -17,15 +17,15 @@ local function notify(title, text)
     })
 end
 
--- Aba Geral
-local GeralTab = Window:MakeTab({
-    Name = "Geral",
+-- Aba Início 
+local InícioTab = Window:MakeTab({
+    Name = "Início",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
 -- Função Fly
-GeralTab:AddButton({
+InícioTab:AddButton({
     Name = "Fly",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Vitoarieshub/Fly-universal-/refs/heads/main/README.md"))()
@@ -34,7 +34,7 @@ GeralTab:AddButton({
 })
 
 -- Função Fly Car
-GeralTab:AddButton({
+InícioTab:AddButton({
     Name = "Fly Car",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
@@ -70,7 +70,7 @@ local function toggleNoclip(enable)
     end
 end
 
-GeralTab:AddToggle({
+InícioTab:AddToggle({
     Name = "Travessa Paredes",
     Default = false,
     Callback = toggleNoclip
@@ -98,14 +98,14 @@ local function toggleInfiniteJump(enable)
     end
 end
 
-GeralTab:AddToggle({
+InícioTab:AddToggle({
     Name = "Pulo Infinito",
     Default = false,
     Callback = toggleInfiniteJump
 })
 
 -- Ajustar Altura do Pulo
-GeralTab:AddTextbox({
+InícioTab:AddTextbox({
     Name = "Altura do Pulo",
     Default = "50",
     TextDisappear = true,
@@ -119,7 +119,7 @@ GeralTab:AddTextbox({
 })
 
 -- Ajustar Velocidade
-GeralTab:AddTextbox({
+InícioTab:AddTextbox({
     Name = "Velocidade",
     Default = "20",
     TextDisappear = true,
@@ -158,8 +158,8 @@ VisuaisTab:AddButton({
 
 -- Função para ajustar FOV
 local function setFOV(newFOV)
-    if newFOV < 30 or newFOV > 300 then
-        notify("Erro", "FOV deve estar entre 30 e 300 graus.")
+    if newFOV < 30 or newFOV > 200 then
+        notify("Erro", "FOV deve estar entre 30 e 200 graus.")
         return
     end
     game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
@@ -171,7 +171,7 @@ local fovActive = false
 local function toggleFov(state)
     fovActive = state
     if fovActive then
-        setFOV(300)
+        setFOV(200)
     else
         setFOV(70)
     end
@@ -211,7 +211,7 @@ local function spectatePlayer(playerName)
         workspace.CurrentCamera.CameraSubject = player.Character.HumanoidRootPart
         notify("Espectador", "Você está agora espectando: " .. playerName)
     else
-        notify("Erro", "Jogador não encontrado ou não tem HumanoidRootPart.")
+        notify("Erro", "Jogador não encontrado.")
     end
 end
 
@@ -323,18 +323,18 @@ local TrollTab = Window:MakeTab({
 })
 
 TrollTab:AddButton({
-    Name = "BringParts",
-    Callback = function()
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
-        notify("BringParts", "BringParts ativado!")
-    end
-})
-
-TrollTab:AddButton({
     Name = "Troll",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/38Jra00x"))()
         notify("Troll", "Troll ativado!")
+    end
+})
+
+TrollTab:AddButton({
+    Name = "BringParts",
+    Callback = function()
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
+        notify("BringParts", "BringParts ativado!")
     end
 })
 
