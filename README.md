@@ -17,15 +17,15 @@ local function notify(title, text)
     })
 end
 
--- Aba Início
-local InícioTab = Window:MakeTab({
-    Name = "Início",
+-- Aba Geral
+local GeralTab = Window:MakeTab({
+    Name = "Geral",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
 -- Função Fly
-InícioTab:AddButton({
+GeralTab:AddButton({
     Name = "Fly",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Vitoarieshub/Fly-universal-/refs/heads/main/README.md"))()
@@ -34,7 +34,7 @@ InícioTab:AddButton({
 })
 
 -- Função Fly Car
-InícioTab:AddButton({
+GeralTab:AddButton({
     Name = "Fly Car",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
@@ -70,7 +70,7 @@ local function toggleNoclip(enable)
     end
 end
 
-InícioTab:AddToggle({
+GeralTab:AddToggle({
     Name = "Travessa Paredes",
     Default = false,
     Callback = toggleNoclip
@@ -98,7 +98,7 @@ local function toggleInfiniteJump(enable)
     end
 end
 
-InícioTab:AddToggle({
+GeralTab:AddToggle({
     Name = "Pulo Infinito",
     Default = false,
     Callback = toggleInfiniteJump
@@ -119,7 +119,7 @@ GeralTab:AddTextbox({
 })
 
 -- Ajustar Velocidade
-InícioTab:AddTextbox({
+GeralTab:AddTextbox({
     Name = "Velocidade",
     Default = "20",
     TextDisappear = true,
