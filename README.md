@@ -132,6 +132,23 @@ GeralTab:AddTextbox({
     end
 })
 
+GeralTab:AddButton({
+    Name = "Resetar Velocidade e Pulo",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+        if humanoid then
+            humanoid.WalkSpeed = 20 -- Velocidade padrão do Roblox
+            humanoid.JumpPower = 50 -- Altura do pulo padrão do Roblox
+            notify("Resetado", "Velocidade e Altura do Pulo foram resetadas!")
+        else
+            notify("Erro", "não encontrado!")
+        end
+    end
+})
+
 -- Aba Visuais
 local VisuaisTab = Window:MakeTab({
     Name = "Visuais",
