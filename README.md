@@ -321,7 +321,7 @@ game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(teleportDropdown)
 end)
 
--- Aba Proteção 
+-- Aba Proteção
 local ProteçãoTab = Window:MakeTab({
     Name = "Proteção",
     Icon = "rbxassetid://4483345998",
@@ -362,7 +362,7 @@ TrollTab:AddButton({
 TrollTab:AddButton({
     Name = "Teleporte menu",
     Callback = function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua"))()
         notify("Teleporte", "Teleporte ativado!")
     end
 })
