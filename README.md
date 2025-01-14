@@ -340,18 +340,18 @@ local TrollTab = Window:MakeTab({
 })
 
 TrollTab:AddButton({
-    Name = "BringParts",
-    Callback = function()
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
-        notify("BringParts", "BringParts ativado!")
-    end
-})
-
-TrollTab:AddButton({
     Name = "Troll",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/38Jra00x"))()
         notify("Troll", "Troll ativado!")
+    end
+})
+
+TrollTab:AddButton({
+    Name = "BringParts",
+    Callback = function()
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
+        notify("BringParts", "BringParts ativado!")
     end
 })
 
@@ -368,5 +368,20 @@ TrollTab:AddButton({
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
         notify("Chat Bypass", "Chat Bypass ativado!")
+    end
+})
+
+-- Aba Configuração
+local ConfiguraçãoTab = Window:MakeTab({
+    Name = "Configuração",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+ConfiguraçãoTab:AddButton({
+    Name = "Anti-Kick",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
+        notify("Anti Kick", "Anti Kick ativado!")
     end
 })
