@@ -367,8 +367,6 @@ local ProteçãoTab = Window:MakeTab({
     PremiumOnly = false
 })
 
-Tab:AddLabel("Em Beta")
-
 ProteçãoTab:AddButton({
     Name = "Anti Kick",
     Callback = function()
