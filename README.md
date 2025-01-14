@@ -144,7 +144,7 @@ GeralTab:AddButton({
             humanoid.JumpPower = 50 -- Altura do pulo padrão do Roblox
             notify("Resetado", "Velocidade e Altura do Pulo foram resetadas!")
         else
-            notify("Erro", "não encontrado!")
+            notify("Erro", "Humanoide não encontrado!")
         end
     end
 })
@@ -208,7 +208,7 @@ local JogadorTab = Window:MakeTab({
 })
 
 local playerDropdown
-local EspectarConnection
+local teleportDropdown
 
 -- Função para atualizar a lista de jogadores no dropdown
 local function updatePlayerList(dropdown)
@@ -219,7 +219,7 @@ local function updatePlayerList(dropdown)
     dropdown:Refresh(playerNames, true)
 end
 
--- Função para começar a espectar o jogador
+-- Função para espectar jogador
 local function spectatePlayer(playerName)
     local localPlayer = game.Players.LocalPlayer
     local player = game.Players:FindFirstChild(playerName)
@@ -232,13 +232,13 @@ local function spectatePlayer(playerName)
     end
 end
 
--- Função para parar de espectar e voltar para o personagem local
+-- Função para parar de espectar
 local function stopSpectating()
     workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
-    notify("Espectador", "Você parou de espectar ó jogador .")
+    notify("Espectador", "Você parou de espectar.")
 end
 
--- Criação do Dropdown para escolher o jogador para espectar
+-- Dropdown de Espectar
 playerDropdown = JogadorTab:AddDropdown({
     Name = "Espectar Jogador",
     Options = {},
@@ -247,7 +247,7 @@ playerDropdown = JogadorTab:AddDropdown({
     end
 })
 
--- Botão para Atualizar a Lista de Jogadores
+-- Botão para Atualizar Lista de Jogadores
 JogadorTab:AddButton({
     Name = "Atualizar Lista de Jogadores",
     Callback = function()
@@ -264,10 +264,10 @@ JogadorTab:AddButton({
     end
 })
 
--- Inicializar a Lista de Jogadores ao Carregar o Script
+-- Inicializar a Lista de Jogadores
 updatePlayerList(playerDropdown)
 
--- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
+-- Eventos para Atualizar Lista ao Entrar/Sair
 game.Players.PlayerAdded:Connect(function()
     updatePlayerList(playerDropdown)
 end)
@@ -275,17 +275,6 @@ end)
 game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(playerDropdown)
 end)
-
-local teleportDropdown
-
--- Função para atualizar a lista de jogadores no dropdown
-local function updatePlayerList(dropdown)
-    local playerNames = {}
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        table.insert(playerNames, player.Name)
-    end
-    dropdown:Refresh(playerNames, true)
-end
 
 -- Função para teleportar para outro jogador
 local function teleportToPlayer(playerName)
@@ -301,7 +290,7 @@ local function teleportToPlayer(playerName)
     end
 end
 
--- Dropdown de Seleção de Jogador para teleportar
+-- Dropdown de Teleporte
 teleportDropdown = JogadorTab:AddDropdown({
     Name = "Teleportar para Jogador",
     Options = {},
@@ -320,10 +309,10 @@ JogadorTab:AddButton({
     end
 })
 
--- Inicializar a Lista de Jogadores ao Carregar o Script
+-- Inicializar a Lista de Jogadores
 updatePlayerList(teleportDropdown)
 
--- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
+-- Eventos para Atualizar Lista ao Entrar/Sair
 game.Players.PlayerAdded:Connect(function()
     updatePlayerList(teleportDropdown)
 end)
@@ -371,15 +360,15 @@ TrollTab:AddButton({
     end
 })
 
--- Aba Config
-local ConfigTab = Window:MakeTab({
-    Name = "Config",
+-- Aba Beta
+local BetaTab = Window:MakeTab({
+    Name = "Beta",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
-ConfigTab:AddButton({
-    Name = "Anti Kick",
+BetaTab:AddButton({
+    Name = "Anti-Kick",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
         notify("Anti Kick", "Anti Kick ativado!")
