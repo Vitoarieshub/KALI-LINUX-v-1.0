@@ -371,6 +371,10 @@ TrollTab:AddButton({
     end
 })
 
+local Section = TrollTab:AddSection({
+	Name = "Proteger"
+})
+
 TrollTab:AddButton({
     Name = "Anti Kick",
     Callback = function()
