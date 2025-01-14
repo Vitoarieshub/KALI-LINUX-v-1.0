@@ -10,8 +10,8 @@ local Window = OrionLib:MakeWindow({
 -- Função de Notificação
 local function notify(title, text)
     OrionLib:MakeNotification({
-        Name = title,
-        Content = text,
+        Name = olá,
+        Content = Seja bem vindo,
         Image = "rbxassetid://4483345998",
         Time = 5
     })
@@ -321,21 +321,6 @@ game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(teleportDropdown)
 end)
 
--- Aba Proteção
-local ProteçãoTab = Window:MakeTab({
-    Name = "Proteção",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
-ProteçãoTab:AddButton({
-    Name = "Anti Kick",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
-        notify("Anti Kick", "Anti Kick ativado!")
-    end
-})
-
 -- Aba Troll
 local TrollTab = Window:MakeTab({
     Name = "Troll",
@@ -362,7 +347,7 @@ TrollTab:AddButton({
 TrollTab:AddButton({
     Name = "Teleporte menu",
     Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua"))()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
         notify("Teleporte", "Teleporte ativado!")
     end
 })
@@ -372,5 +357,20 @@ TrollTab:AddButton({
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
         notify("Chat Bypass", "Chat Bypass ativado!")
+    end
+})
+
+-- Aba Beta
+local BetaTab = Window:MakeTab({
+    Name = "Beta",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+BetaTab:AddButton({
+    Name = "Anti Kick",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
+        notify("Anti Kick", "Anti Kick ativado!")
     end
 })
