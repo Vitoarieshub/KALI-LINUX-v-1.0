@@ -238,6 +238,10 @@ local function stopSpectating()
     notify("Espectador", "Você parou de espectar ó jogador .")
 end
 
+local Section = JogadorTab:AddSection({
+	Name = "Espectar"
+})
+
 -- Criação do Dropdown para escolher o jogador para espectar
 playerDropdown = JogadorTab:AddDropdown({
     Name = "Espectar Jogador",
@@ -376,7 +380,7 @@ TrollTab:AddButton({
 })
 
 local Section = TrollTab:AddSection({
-	Name = "Proteger"
+	Name = "Proteção"
 })
 
 TrollTab:AddButton({
