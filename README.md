@@ -321,6 +321,21 @@ game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(teleportDropdown)
 end)
 
+-- Aba Proteção 
+local ProteçãoTab = Window:MakeTab({
+    Name = "Proteção",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+ProteçãoTab:AddButton({
+    Name = "Anti Kick",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
+        notify("Anti Kick", "Anti Kick ativado!")
+    end
+})
+
 -- Aba Troll
 local TrollTab = Window:MakeTab({
     Name = "Troll",
@@ -357,20 +372,5 @@ TrollTab:AddButton({
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
         notify("Chat Bypass", "Chat Bypass ativado!")
-    end
-})
-
--- Aba Teste 
-local TesteTab = Window:MakeTab({
-    Name = "Teste",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
-Em TesteTab:AddButton({
-    Name = "Anti Kick",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
-        notify("Anti Kick", "Anti Kick ativado!")
     end
 })
