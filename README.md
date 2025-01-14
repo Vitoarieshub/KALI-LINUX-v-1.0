@@ -301,6 +301,10 @@ local function teleportToPlayer(playerName)
     end
 end
 
+local Section = JogadorTab:AddSection({
+	Name = "Teleporta"
+})
+
 -- Dropdown de Seleção de Jogador para teleportar
 teleportDropdown = JogadorTab:AddDropdown({
     Name = "Teleportar para Jogador",
