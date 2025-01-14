@@ -29,7 +29,7 @@ GeralTab:AddButton({
     Name = "Fly",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Vitoarieshub/Fly-universal-/refs/heads/main/README.md"))()
-        notify("Fly", "Ativado!")
+        notify("Fly", "Fly ativado!")
     end
 })
 
@@ -38,7 +38,7 @@ GeralTab:AddButton({
     Name = "Fly Car",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
-        notify("Fly Car", "Ativado!")
+        notify("Fly Car", "Fly Car ativado!")
     end
 })
 
@@ -66,7 +66,7 @@ local function toggleNoclip(enable)
                 part.CanCollide = true
             end
         end
-        notify("Travessa Paredes", "Desativado.")
+        notify("Travessa Paredes", "Travessa Paredes desativado.")
     end
 end
 
@@ -88,13 +88,13 @@ local function toggleInfiniteJump(enable)
                 humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
             end)
         end
-        notify("Pulo Infinito", "Ativado!")
+        notify("Pulo Infinito", "Pulo infinito ativado!")
     else
         if jumpConnection then
             jumpConnection:Disconnect()
             jumpConnection = nil
         end
-        notify("Pulo Infinito", "Desativado.")
+        notify("Pulo Infinito", "Pulo infinito desativado.")
     end
 end
 
@@ -106,7 +106,7 @@ GeralTab:AddToggle({
 
 -- Função para definir a gravidade com base no valor digitado
 GeralTab:AddTextbox({
-    Name = "Gravidade",
+    Name = "Valor da Gravidade",
     Default = "196.2",  -- Valor padrão de gravidade no Roblox
     TextDisappear = true,
     Callback = function(value)
@@ -114,7 +114,7 @@ GeralTab:AddTextbox({
         if gravityValue then
             -- Ajusta a gravidade do jogo
             game.Workspace.Gravity = gravityValue
-            notify("Gravidade", "Foi ajustada para " .. value .. ".")
+            notify("Gravidade Alterada", "A gravidade foi ajustada para " .. value .. ".")
         else
             notify("Erro", "Por favor, digite um valor numérico válido para a gravidade.")
         end
@@ -130,7 +130,7 @@ GeralTab:AddTextbox({
         local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
         if humanoid then
             humanoid.JumpPower = tonumber(value)
-            notify("Altura do Pulo", "Ajustada para " .. value)
+            notify("Altura do Pulo", "Altura do Pulo ajustada para " .. value)
         end
     end
 })
@@ -144,7 +144,7 @@ GeralTab:AddTextbox({
         local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
         if humanoid then
             humanoid.WalkSpeed = tonumber(value)
-            notify("Velocidade", "Ajustada para " .. value)
+            notify("Velocidade", "Velocidade ajustada para " .. value)
         end
     end
 })
@@ -159,10 +159,10 @@ GeralTab:AddButton({
         if humanoid then
             humanoid.WalkSpeed = 20 -- Velocidade padrão do Roblox
             humanoid.JumpPower = 50 -- Altura do pulo padrão do Roblox
-            game.Workspace.Gravity = 196.2 -- Gravidade padrão do Roblox
-            notify("Resetado", "Velocidade e Altura do Pulo e Gravidade foram resetadas!")
+            game.Workspace.Gravity = 196.2  -- Gravidade padrão do Roblox
+            notify("Resetado", "Velocidade  Altura do Pulo e Gravidade foram resetadas!")
         else
-            notify("Erro", "Não encontrado!")
+            notify("Erro", "não encontrado!")
         end
     end
 })
@@ -179,7 +179,7 @@ VisuaisTab:AddButton({
     Name = "ESP Nome",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/rSUGN1fK"))()
-        notify("ESP Nome", " Ativado!")
+        notify("ESP", "ESP nome ativado!")
     end
 })
 
@@ -187,7 +187,7 @@ VisuaisTab:AddButton({
     Name = "ESP Linhas",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/nnHbfvGW"))()
-        notify("ESP Linhas", "Ativado!")
+        notify("ESP", "ESP linhas ativado!")
     end
 })
 
@@ -198,7 +198,7 @@ local function setFOV(newFOV)
         return
     end
     game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
-    notify("Campo de Visão", "Alterado para " .. newFOV .. " graus.")
+    notify("Campo de Visão", "Campo de Visão alterado para " .. newFOV .. " graus.")
 end
 
 -- Alternar Campo de Visão (FOV)
@@ -253,11 +253,11 @@ end
 -- Função para parar de espectar e voltar para o personagem local
 local function stopSpectating()
     workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
-    notify("Espectador", "Você parou de espectar o jogador.")
+    notify("Espectador", "Você parou de espectar ó jogador .")
 end
 
 local Section = JogadorTab:AddSection({
-    Name = "Espectar"
+	Name = "Espectar"
 })
 
 -- Criação do Dropdown para escolher o jogador para espectar
@@ -298,6 +298,66 @@ game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(playerDropdown)
 end)
 
+local teleportDropdown
+
+-- Função para atualizar a lista de jogadores no dropdown
+local function updatePlayerList(dropdown)
+    local playerNames = {}
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        table.insert(playerNames, player.Name)
+    end
+    dropdown:Refresh(playerNames, true)
+end
+
+-- Função para teleportar para outro jogador
+local function teleportToPlayer(playerName)
+    local player = game.Players:FindFirstChild(playerName)
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            character:MoveTo(player.Character.HumanoidRootPart.Position)
+            notify("Teleporte", "Teleportado para " .. playerName)
+        end
+    else
+        notify("Erro", "Jogador não encontrado.")
+    end
+end
+
+local Section = JogadorTab:AddSection({
+	Name = "Teleporta"
+})
+
+-- Dropdown de Seleção de Jogador para teleportar
+teleportDropdown = JogadorTab:AddDropdown({
+    Name = "Teleportar para Jogador",
+    Options = {},
+    Default = nil,
+    Callback = function(selectedPlayer)
+        teleportToPlayer(selectedPlayer)
+    end
+})
+
+-- Botão para Atualizar Lista de Jogadores
+JogadorTab:AddButton({
+    Name = "Atualizar Lista de Jogadores",
+    Callback = function()
+        updatePlayerList(teleportDropdown)
+        notify("Atualizar Lista", "Lista de jogadores atualizada!")
+    end
+})
+
+-- Inicializar a Lista de Jogadores ao Carregar o Script
+updatePlayerList(teleportDropdown)
+
+-- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
+game.Players.PlayerAdded:Connect(function()
+    updatePlayerList(teleportDropdown)
+end)
+
+game.Players.PlayerRemoving:Connect(function()
+    updatePlayerList(teleportDropdown)
+end)
+
 -- Aba Troll
 local TrollTab = Window:MakeTab({
     Name = "Troll",
@@ -309,7 +369,7 @@ TrollTab:AddButton({
     Name = "BringParts",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
-        notify("BringParts", "Ativado!")
+        notify("BringParts", "BringParts ativado!")
     end
 })
 
@@ -317,7 +377,7 @@ TrollTab:AddButton({
     Name = "Troll",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/38Jra00x"))()
-        notify("Troll", "Ativado!")
+        notify("Troll", "Troll ativado!")
     end
 })
 
@@ -325,7 +385,7 @@ TrollTab:AddButton({
     Name = "Teleporte menu",
     Callback = function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
-        notify("Teleporte", "Ativado!")
+        notify("Teleporte", "Teleporte ativado!")
     end
 })
 
@@ -333,18 +393,18 @@ TrollTab:AddButton({
     Name = "Chat Bypass",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
-        notify("Chat Bypass", "Ativado!")
+        notify("Chat Bypass", "Chat Bypass ativado!")
     end
 })
 
 local Section = TrollTab:AddSection({
-    Name = "Proteção"
+	Name = "Proteção"
 })
 
 TrollTab:AddButton({
     Name = "Anti Kick",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
-        notify("Anti Kick", "Ativado!")
+        notify("Anti Kick", "Anti Kick ativado!")
     end
 })
