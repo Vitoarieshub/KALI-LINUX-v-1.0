@@ -1,4 +1,5 @@
-local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+nt.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
+        notify("Anti Kick", "Anti Kicklocal OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 
 local Window = OrionLib:MakeWindow({
     Name = "KALI LINUX",
@@ -218,7 +219,7 @@ local function updatePlayerList(dropdown)
     end
     dropdown:Refresh(playerNames, true)
 end
-
+no
 -- Função para começar a espectar o jogador
 local function spectatePlayer(playerName)
     local localPlayer = game.Players.LocalPlayer
@@ -228,7 +229,7 @@ local function spectatePlayer(playerName)
         workspace.CurrentCamera.CameraSubject = player.Character.HumanoidRootPart
         notify("Espectador", "Você está agora espectando: " .. playerName)
     else
-        notify("Erro", "Jogador não encontrado ou não tem HumanoidRootPart.")
+        notify("Erro", "Jogador não encontrado.")
     end
 end
 
