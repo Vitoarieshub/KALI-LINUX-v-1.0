@@ -28,7 +28,7 @@ local GeralTab = Window:MakeTab({
 GeralTab:AddButton({
     Name = "Fly",
     Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Vitoarieshub/Fly-universal-/main/Fly.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Vitoarieshub/Fly-universal-/refs/heads/main/README.md"))()
         notify("Fly", "Fly ativado!")
     end
 })
@@ -37,7 +37,7 @@ GeralTab:AddButton({
 GeralTab:AddButton({
     Name = "Fly Car",
     Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/TxzeBi3F"))()
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
         notify("Fly Car", "Fly Car ativado!")
     end
 })
@@ -140,11 +140,11 @@ GeralTab:AddButton({
         local humanoid = character:FindFirstChildOfClass("Humanoid")
 
         if humanoid then
-            humanoid.WalkSpeed = 16 -- Velocidade padrão do Roblox
+            humanoid.WalkSpeed = 20 -- Velocidade padrão do Roblox
             humanoid.JumpPower = 50 -- Altura do pulo padrão do Roblox
             notify("Resetado", "Velocidade e Altura do Pulo foram resetadas!")
         else
-            notify("Erro", "Humanoide não encontrado!")
+            notify("Erro", "não encontrado!")
         end
     end
 })
@@ -175,8 +175,8 @@ VisuaisTab:AddButton({
 
 -- Função para ajustar FOV
 local function setFOV(newFOV)
-    if newFOV < 30 or newFOV > 120 then
-        notify("Erro", "FOV deve estar entre 30 e 120 graus.")
+    if newFOV < 30 or newFOV > 300 then
+        notify("Erro", "FOV deve estar entre 30 e 300 graus.")
         return
     end
     game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
@@ -188,7 +188,7 @@ local fovActive = false
 local function toggleFov(state)
     fovActive = state
     if fovActive then
-        setFOV(120)
+        setFOV(300)
     else
         setFOV(70)
     end
@@ -208,6 +208,7 @@ local JogadorTab = Window:MakeTab({
 })
 
 local playerDropdown
+local EspectarConnection
 
 -- Função para atualizar a lista de jogadores no dropdown
 local function updatePlayerList(dropdown)
@@ -234,7 +235,7 @@ end
 -- Função para parar de espectar e voltar para o personagem local
 local function stopSpectating()
     workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
-    notify("Espectador", "Você parou de espectar o jogador.")
+    notify("Espectador", "Você parou de espectar ó jogador .")
 end
 
 -- Criação do Dropdown para escolher o jogador para espectar
@@ -275,6 +276,62 @@ game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(playerDropdown)
 end)
 
+local teleportDropdown
+
+-- Função para atualizar a lista de jogadores no dropdown
+local function updatePlayerList(dropdown)
+    local playerNames = {}
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        table.insert(playerNames, player.Name)
+    end
+    dropdown:Refresh(playerNames, true)
+end
+
+-- Função para teleportar para outro jogador
+local function teleportToPlayer(playerName)
+    local player = game.Players:FindFirstChild(playerName)
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            character:MoveTo(player.Character.HumanoidRootPart.Position)
+            notify("Teleporte", "Teleportado para " .. playerName)
+        end
+    else
+        notify("Erro", "Jogador não encontrado.")
+    end
+end
+
+-- Dropdown de Seleção de Jogador para teleportar
+teleportDropdown = JogadorTab:AddDropdown({
+    Name = "Teleportar para Jogador",
+    Options = {},
+    Default = nil,
+    Callback = function(selectedPlayer)
+        teleportToPlayer(selectedPlayer)
+    end
+})
+
+-- Botão para Atualizar Lista de Jogadores
+JogadorTab:AddButton({
+    Name = "Atualizar Lista de Jogadores",
+    Callback = function()
+        updatePlayerList(teleportDropdown)
+        notify("Atualizar Lista", "Lista de jogadores atualizada!")
+    end
+})
+
+-- Inicializar a Lista de Jogadores ao Carregar o Script
+updatePlayerList(teleportDropdown)
+
+-- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
+game.Players.PlayerAdded:Connect(function()
+    updatePlayerList(teleportDropdown)
+end)
+
+game.Players.PlayerRemoving:Connect(function()
+    updatePlayerList(teleportDropdown)
+end)
+
 -- Aba Troll
 local TrollTab = Window:MakeTab({
     Name = "Troll",
@@ -293,7 +350,7 @@ TrollTab:AddButton({
 TrollTab:AddButton({
     Name = "BringParts",
     Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/QmNv5KYh"))()
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
         notify("BringParts", "BringParts ativado!")
     end
 })
@@ -301,7 +358,7 @@ TrollTab:AddButton({
 TrollTab:AddButton({
     Name = "Teleporte menu",
     Callback = function()
-        loadstring(game:HttpGet('https://pastebin.com/raw/ynP6WYDn'))()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
         notify("Teleporte", "Teleporte ativado!")
     end
 })
@@ -309,22 +366,22 @@ TrollTab:AddButton({
 TrollTab:AddButton({
     Name = "Chat Bypass",
     Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/vrMt6p4y"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
         notify("Chat Bypass", "Chat Bypass ativado!")
     end
 })
 
--- Aba Configuração
-local ConfiguraçãoTab = Window:MakeTab({
-    Name = "Configuração",
+-- Aba Config
+local ConfigTab = Window:MakeTab({
+    Name = "Config",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
-ConfiguraçãoTab:AddButton({
-    Name = "Anti-Kick",
+ConfigTab:AddButton({
+    Name = "Anti Kick",
     Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/w1xj2UrR"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
         notify("Anti Kick", "Anti Kick ativado!")
     end
 })
