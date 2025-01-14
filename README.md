@@ -10,8 +10,8 @@ local Window = OrionLib:MakeWindow({
 -- Função de Notificação
 local function notify(title, text)
     OrionLib:MakeNotification({
-        Name = olá,
-        Content = Seja bem vindo,
+        Name = title,
+        Content = text,
         Image = "rbxassetid://4483345998",
         Time = 5
     })
@@ -144,7 +144,7 @@ GeralTab:AddButton({
             humanoid.JumpPower = 50 -- Altura do pulo padrão do Roblox
             notify("Resetado", "Velocidade e Altura do Pulo foram resetadas!")
         else
-            notify("Erro", "Humanoide não encontrado!")
+            notify("Erro", "não encontrado!")
         end
     end
 })
@@ -208,7 +208,7 @@ local JogadorTab = Window:MakeTab({
 })
 
 local playerDropdown
-local teleportDropdown
+local EspectarConnection
 
 -- Função para atualizar a lista de jogadores no dropdown
 local function updatePlayerList(dropdown)
@@ -219,7 +219,7 @@ local function updatePlayerList(dropdown)
     dropdown:Refresh(playerNames, true)
 end
 
--- Função para espectar jogador
+-- Função para começar a espectar o jogador
 local function spectatePlayer(playerName)
     local localPlayer = game.Players.LocalPlayer
     local player = game.Players:FindFirstChild(playerName)
@@ -232,13 +232,13 @@ local function spectatePlayer(playerName)
     end
 end
 
--- Função para parar de espectar
+-- Função para parar de espectar e voltar para o personagem local
 local function stopSpectating()
     workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
-    notify("Espectador", "Você parou de espectar.")
+    notify("Espectador", "Você parou de espectar ó jogador .")
 end
 
--- Dropdown de Espectar
+-- Criação do Dropdown para escolher o jogador para espectar
 playerDropdown = JogadorTab:AddDropdown({
     Name = "Espectar Jogador",
     Options = {},
@@ -247,7 +247,7 @@ playerDropdown = JogadorTab:AddDropdown({
     end
 })
 
--- Botão para Atualizar Lista de Jogadores
+-- Botão para Atualizar a Lista de Jogadores
 JogadorTab:AddButton({
     Name = "Atualizar Lista de Jogadores",
     Callback = function()
@@ -264,10 +264,10 @@ JogadorTab:AddButton({
     end
 })
 
--- Inicializar a Lista de Jogadores
+-- Inicializar a Lista de Jogadores ao Carregar o Script
 updatePlayerList(playerDropdown)
 
--- Eventos para Atualizar Lista ao Entrar/Sair
+-- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
 game.Players.PlayerAdded:Connect(function()
     updatePlayerList(playerDropdown)
 end)
@@ -275,6 +275,17 @@ end)
 game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(playerDropdown)
 end)
+
+local teleportDropdown
+
+-- Função para atualizar a lista de jogadores no dropdown
+local function updatePlayerList(dropdown)
+    local playerNames = {}
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        table.insert(playerNames, player.Name)
+    end
+    dropdown:Refresh(playerNames, true)
+end
 
 -- Função para teleportar para outro jogador
 local function teleportToPlayer(playerName)
@@ -290,7 +301,7 @@ local function teleportToPlayer(playerName)
     end
 end
 
--- Dropdown de Teleporte
+-- Dropdown de Seleção de Jogador para teleportar
 teleportDropdown = JogadorTab:AddDropdown({
     Name = "Teleportar para Jogador",
     Options = {},
@@ -309,10 +320,10 @@ JogadorTab:AddButton({
     end
 })
 
--- Inicializar a Lista de Jogadores
+-- Inicializar a Lista de Jogadores ao Carregar o Script
 updatePlayerList(teleportDropdown)
 
--- Eventos para Atualizar Lista ao Entrar/Sair
+-- Eventos para Atualizar a Lista quando um Jogador Entra ou Sai
 game.Players.PlayerAdded:Connect(function()
     updatePlayerList(teleportDropdown)
 end)
@@ -329,18 +340,18 @@ local TrollTab = Window:MakeTab({
 })
 
 TrollTab:AddButton({
-    Name = "Troll",
-    Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/38Jra00x"))()
-        notify("Troll", "Troll ativado!")
-    end
-})
-
-TrollTab:AddButton({
     Name = "BringParts",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
         notify("BringParts", "BringParts ativado!")
+    end
+})
+
+TrollTab:AddButton({
+    Name = "Troll",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/38Jra00x"))()
+        notify("Troll", "Troll ativado!")
     end
 })
 
@@ -360,14 +371,7 @@ TrollTab:AddButton({
     end
 })
 
--- Aba Beta
-local BetaTab = Window:MakeTab({
-    Name = "Beta",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
-BetaTab:AddButton({
+TrollTab:AddButton({
     Name = "Anti Kick",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
