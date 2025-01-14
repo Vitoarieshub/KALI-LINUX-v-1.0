@@ -360,14 +360,14 @@ TrollTab:AddButton({
     end
 })
 
--- Aba Proteção
-local ProteçãoTab = Window:MakeTab({
-    Name = "Proteção",
+-- Aba Em Beta 
+local Em BetaTab = Window:MakeTab({
+    Name = "Em Beta",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
-ProteçãoTab:AddButton({
+Em BetaTab:AddButton({
     Name = "Anti Kick",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
