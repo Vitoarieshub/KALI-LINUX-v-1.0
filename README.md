@@ -106,7 +106,7 @@ GeralTab:AddToggle({
 
 -- Função para definir a gravidade com base no valor digitado
 GeralTab:AddTextbox({
-    Name = "Valor da Gravidade",
+    Name = "Gravidade",
     Default = "196.2",  -- Valor padrão de gravidade no Roblox
     TextDisappear = true,
     Callback = function(value)
@@ -366,18 +366,18 @@ local TrollTab = Window:MakeTab({
 })
 
 TrollTab:AddButton({
-    Name = "BringParts",
-    Callback = function()
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
-        notify("BringParts", "BringParts ativado!")
-    end
-})
-
-TrollTab:AddButton({
     Name = "Troll",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/38Jra00x"))()
         notify("Troll", "Troll ativado!")
+    end
+})
+
+TrollTab:AddButton({
+    Name = "BringParts",
+    Callback = function()
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
+        notify("BringParts", "BringParts ativado!")
     end
 })
 
