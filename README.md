@@ -29,7 +29,7 @@ GeralTab:AddButton({
     Name = "Fly",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Vitoarieshub/Fly-universal-/refs/heads/main/README.md"))()
-        notify("Fly", "Fly ativado!")
+        notify("Fly", "Ativado!")
     end
 })
 
@@ -38,7 +38,7 @@ GeralTab:AddButton({
     Name = "Fly Car",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
-        notify("Fly Car", "Fly Car ativado!")
+        notify("Fly Car", "Ativado!")
     end
 })
 
@@ -66,7 +66,7 @@ local function toggleNoclip(enable)
                 part.CanCollide = true
             end
         end
-        notify("Travessa Paredes", "Travessa Paredes desativado.")
+        notify("Travessa Paredes", "Desativado.")
     end
 end
 
@@ -88,13 +88,13 @@ local function toggleInfiniteJump(enable)
                 humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
             end)
         end
-        notify("Pulo Infinito", "Pulo infinito ativado!")
+        notify("Pulo Infinito", "Ativado!")
     else
         if jumpConnection then
             jumpConnection:Disconnect()
             jumpConnection = nil
         end
-        notify("Pulo Infinito", "Pulo infinito desativado.")
+        notify("Pulo Infinito", "Desativado.")
     end
 end
 
@@ -116,7 +116,7 @@ GeralTab:AddTextbox({
             game.Workspace.Gravity = gravityValue
             notify("Gravidade Alterada", "A gravidade foi ajustada para " .. value .. ".")
         else
-            notify("Erro", "Por favor, digite um valor numérico válido para a gravidade.")
+            notify("Erro", "Por favor, digite um valor numérico para gravidade.")
         end
     end
 })
@@ -130,7 +130,7 @@ GeralTab:AddTextbox({
         local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
         if humanoid then
             humanoid.JumpPower = tonumber(value)
-            notify("Altura do Pulo", "Altura do Pulo ajustada para " .. value)
+            notify("Altura do Pulo", "Ajustada para " .. value)
         end
     end
 })
@@ -144,7 +144,7 @@ GeralTab:AddTextbox({
         local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
         if humanoid then
             humanoid.WalkSpeed = tonumber(value)
-            notify("Velocidade", "Velocidade ajustada para " .. value)
+            notify("Velocidade", "Ajustada para " .. value)
         end
     end
 })
@@ -179,7 +179,7 @@ VisuaisTab:AddButton({
     Name = "ESP Nome",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/rSUGN1fK"))()
-        notify("ESP", "ESP nome ativado!")
+        notify("ESP Nome", "Ativado!")
     end
 })
 
@@ -187,7 +187,7 @@ VisuaisTab:AddButton({
     Name = "ESP Linhas",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/nnHbfvGW"))()
-        notify("ESP", "ESP linhas ativado!")
+        notify("ESP Linhas", "Ativado!")
     end
 })
 
@@ -198,7 +198,7 @@ local function setFOV(newFOV)
         return
     end
     game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
-    notify("Campo de Visão", "Campo de Visão alterado para " .. newFOV .. " graus.")
+    notify("Campo de Visão", "Alterado para " .. newFOV .. " graus.")
 end
 
 -- Alternar Campo de Visão (FOV)
@@ -369,7 +369,7 @@ TrollTab:AddButton({
     Name = "Troll",
     Callback = function()
         loadstring(game:HttpGet("https://pastebin.com/raw/38Jra00x"))()
-        notify("Troll", "Troll ativado!")
+        notify("Troll", "Ativado!")
     end
 })
 
@@ -377,7 +377,7 @@ TrollTab:AddButton({
     Name = "BringParts",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
-        notify("BringParts", "BringParts ativado!")
+        notify("BringParts", "Ativado!")
     end
 })
 
@@ -385,7 +385,7 @@ TrollTab:AddButton({
     Name = "Teleporte menu",
     Callback = function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
-        notify("Teleporte", "Teleporte ativado!")
+        notify("Teleporte", "Ativado!")
     end
 })
 
@@ -393,7 +393,7 @@ TrollTab:AddButton({
     Name = "Chat Bypass",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AlgariBot/lua/refs/heads/Lua-Script-Executor/LocalNeverPatchedBypass.txt"))()
-        notify("Chat Bypass", "Chat Bypass ativado!")
+        notify("Chat Bypass", "Ativado!")
     end
 })
 
@@ -405,7 +405,7 @@ TrollTab:AddButton({
     Name = "Anti Kick",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
-        notify("Anti Kick", "Anti Kick ativado!")
+        notify("Anti Kick", "Ativado!")
     end
 })
 
@@ -429,14 +429,14 @@ local function applyFPSBoost()
 
     game:GetService("Workspace").CurrentCamera.FieldOfView = 70
     game:GetService("Workspace").CurrentCamera.MaxDistance = 500
-    notify("FPS Boost", "Boost de FPS ativado com sucesso!")
+    notify("FPS Boost", "Ativado com sucesso!")
 end
 
 -- Função para reverter as mudanças e voltar à qualidade normal
 local function revertFPSBoost()
     settings().Rendering.QualityLevel = Enum.QualityLevel.Automatic
     game:GetService("Lighting").GlobalShadows = true
-    notify("FPS Boost", "Boost de FPS desativado, configurações revertidas.")
+    notify("FPS Boost", "Desativado,.")
 end
 
 local isFPSBoostActive = false  -- Inicia com o boost desativado
