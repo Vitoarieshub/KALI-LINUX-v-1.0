@@ -114,7 +114,7 @@ GeralTab:AddTextbox({
         if gravityValue then
             -- Ajusta a gravidade do jogo
             game.Workspace.Gravity = gravityValue
-            notify("Gravidade Alterada", "A gravidade foi ajustada para " .. value .. ".")
+            notify("Gravidade", "Foi ajustada para " .. value .. ".")
         else
             notify("Erro", "Por favor, digite um valor numérico para gravidade.")
         end
@@ -436,7 +436,7 @@ end
 local function revertFPSBoost()
     settings().Rendering.QualityLevel = Enum.QualityLevel.Automatic
     game:GetService("Lighting").GlobalShadows = true
-    notify("FPS Boost", "Desativado,.")
+    notify("FPS Boost", "Desativado.")
 end
 
 local isFPSBoostActive = false  -- Inicia com o boost desativado
@@ -452,15 +452,10 @@ local function toggleFPSBoost()
 end
 
 -- Botão para alternar o boost de FPS
-TrollTab:AddToggle({
+TrollTab:AddButton({
     Name = "Boost FPS",
-    Default = false,  -- Inicia com o toggle desativado
-    Callback = function(value)
-        if value then
-            applyFPSBoost()
-        else
-            revertFPSBoost()
-        end
+    Callback = function()
+        toggleFPSBoost()
     end
 })
 
