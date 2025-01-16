@@ -397,20 +397,19 @@ TrollTab:AddButton({
     end
 })
 
-local Section = TrollTab:AddSection({
-	Name = "Proteção"
+-- Aba Configuração
+local ConfiguraçãoTab = Window:MakeTab({
+    Name = "Configuração",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
 })
 
-TrollTab:AddButton({
+ConfiguraçãoTab:AddButton({
     Name = "Anti Kick",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
         notify("Anti Kick", "Anti Kick ativado!")
     end
-})
-
-local Section = TrollTab:AddSection({
-	Name = "Configuração Em Beta"
 })
 
 -- Função para aplicar o boost de FPS
@@ -455,15 +454,8 @@ local function toggleFPSBoost()
     isFPSBoostActive = not isFPSBoostActive
 end
 
--- Aba Geral
-local GeralTab = Window:MakeTab({
-    Name = "Geral",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
 -- Botão para alternar o boost de FPS
-GeralTab:AddToggle({
+ConfiguraçãoTab:AddToggle({
     Name = "Boost FPS",
     Default = false,  -- Inicia com o toggle desativado
     Callback = function(value)
