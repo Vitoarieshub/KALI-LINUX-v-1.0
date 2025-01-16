@@ -408,3 +408,71 @@ TrollTab:AddButton({
         notify("Anti Kick", "Anti Kick ativado!")
     end
 })
+
+local Section = TrollTab:AddSection({
+	Name = "Configuração Em Beta"
+})
+
+-- Função para aplicar o boost de FPS
+local function applyFPSBoost()
+    settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+    game:GetService("Lighting").GlobalShadows = false
+
+    for _, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v:IsA("Part") or v:IsA("UnionOperation") or v:IsA("MeshPart") then
+            v.Material = Enum.Material.SmoothPlastic
+            v.Reflectance = 0
+        elseif v:IsA("Decal") or v:IsA("Texture") then
+            v:Destroy()
+        elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+            v:Destroy()
+        elseif v:IsA("PointLight") or v:IsA("SpotLight") or v:IsA("SurfaceLight") then
+            v:Destroy()
+        end
+    end
+
+    game:GetService("Workspace").CurrentCamera.FieldOfView = 70
+    game:GetService("Workspace").CurrentCamera.MaxDistance = 500
+    notify("FPS Boost", "Boost de FPS ativado com sucesso!")
+end
+
+-- Função para reverter as mudanças e voltar à qualidade normal
+local function revertFPSBoost()
+    settings().Rendering.QualityLevel = Enum.QualityLevel.Automatic
+    game:GetService("Lighting").GlobalShadows = true
+    notify("FPS Boost", "Boost de FPS desativado, configurações revertidas.")
+end
+
+local isFPSBoostActive = false  -- Inicia com o boost desativado
+
+-- Função para alternar entre aplicar e reverter o boost de FPS
+local function toggleFPSBoost()
+    if isFPSBoostActive then
+        revertFPSBoost()
+    else
+        applyFPSBoost()
+    end
+    isFPSBoostActive = not isFPSBoostActive
+end
+
+-- Aba Geral
+local GeralTab = Window:MakeTab({
+    Name = "Geral",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- Botão para alternar o boost de FPS
+GeralTab:AddToggle({
+    Name = "Boost FPS",
+    Default = false,  -- Inicia com o toggle desativado
+    Callback = function(value)
+        if value then
+            applyFPSBoost()
+        else
+            revertFPSBoost()
+        end
+    end
+})
+
+OrionLib:Init()
