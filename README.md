@@ -167,6 +167,57 @@ PrincipalTab:AddButton({
     end
 })
 
+-- Aba Visuais
+local VisuaisTab = Window:MakeTab({
+    Name = "Visuais",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- Funções de ESP
+VisuaisTab:AddButton({
+    Name = "ESP Nome",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/rSUGN1fK"))()
+        notify("ESP Nome", "Ativado!")
+    end
+})
+
+VisuaisTab:AddButton({
+    Name = "ESP Linhas",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/nnHbfvGW"))()
+        notify("ESP Linhas", "Ativado!")
+    end
+})
+
+-- Função para ajustar FOV
+local function setFOV(newFOV)
+    if newFOV < 30 or newFOV > 300 then
+        notify("Erro", "FOV deve estar entre 30 e 300 graus.")
+        return
+    end
+    game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
+    notify("Campo de Visão", "Alterado para " .. newFOV .. " graus.")
+end
+
+-- Alternar Campo de Visão (FOV)
+local fovActive = false
+local function toggleFov(state)
+    fovActive = state
+    if fovActive then
+        setFOV(300)
+    else
+        setFOV(70)
+    end
+end
+
+VisuaisTab:AddToggle({
+    Name = "Campo de Visão",
+    Default = false,
+    Callback = toggleFov
+})
+
 -- Aba Jogador
 local JogadorTab = Window:MakeTab({
     Name = "Jogador",
@@ -307,57 +358,6 @@ game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(teleportDropdown)
 end)
 
--- Aba Visuais
-local VisuaisTab = Window:MakeTab({
-    Name = "Visuais",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
--- Funções de ESP
-VisuaisTab:AddButton({
-    Name = "ESP Nome",
-    Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/rSUGN1fK"))()
-        notify("ESP Nome", "Ativado!")
-    end
-})
-
-VisuaisTab:AddButton({
-    Name = "ESP Linhas",
-    Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/nnHbfvGW"))()
-        notify("ESP Linhas", "Ativado!")
-    end
-})
-
--- Função para ajustar FOV
-local function setFOV(newFOV)
-    if newFOV < 30 or newFOV > 300 then
-        notify("Erro", "FOV deve estar entre 30 e 300 graus.")
-        return
-    end
-    game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
-    notify("Campo de Visão", "Alterado para " .. newFOV .. " graus.")
-end
-
--- Alternar Campo de Visão (FOV)
-local fovActive = false
-local function toggleFov(state)
-    fovActive = state
-    if fovActive then
-        setFOV(300)
-    else
-        setFOV(70)
-    end
-end
-
-VisuaisTab:AddToggle({
-    Name = "Campo de Visão",
-    Default = false,
-    Callback = toggleFov
-})
-
 -- Aba Troll
 local TrollTab = Window:MakeTab({
     Name = "Troll",
@@ -397,18 +397,11 @@ TrollTab:AddButton({
     end
 })
 
--- Aba Configuração
-local ConfiguraçãoTab = :MakeTab({
-    Name = "Configuração",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
-local Section = ConfiguraçãoTab:AddSection({
+local Section = TrollTab:AddSection({
 	Name = "configuração"
 })
 
-TConfiguraçãoTab:AddButton({
+TrollTab:AddButton({
     Name = "Anti Kick",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
@@ -459,7 +452,7 @@ local function toggleFPSBoost()
 end
 
 -- Botão para alternar o boost de FPS
-ConfiguraçãoTab:AddButton({
+TrollTab:AddButton({
     Name = "Boost FPS",
     Callback = function()
         toggleFPSBoost()
