@@ -226,6 +226,7 @@ local JogadorTab = Window:MakeTab({
 })
 
 local playerDropdown
+local EspectarConnection
 
 -- Função para atualizar a lista de jogadores no dropdown
 local function updatePlayerList(dropdown)
@@ -236,29 +237,27 @@ local function updatePlayerList(dropdown)
     dropdown:Refresh(playerNames, true)
 end
 
--- Função para começar a espectar o jogador pelo Head
+-- Função para começar a espectar o jogador
 local function spectatePlayer(playerName)
     local localPlayer = game.Players.LocalPlayer
     local player = game.Players:FindFirstChild(playerName)
 
-    if player and player.Character and player.Character:FindFirstChild("Head") then
-        -- Agora a câmera vai focar no Head do jogador
-        workspace.CurrentCamera.CameraSubject = player.Character:WaitForChild("Head")
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        workspace.CurrentCamera.CameraSubject = player.Character.HumanoidRootPart
         notify("Espectador", "Você está agora espectando: " .. playerName)
     else
-        notify("Erro", "Jogador não encontrado ou sem Head.")
+        notify("Erro", "Jogador não encontrado.")
     end
 end
 
 -- Função para parar de espectar e voltar para o personagem local
 local function stopSpectating()
-    workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Head")
-    notify("Espectador", "Você parou de espectar o jogador.")
+    workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+    notify("Espectador", "Você parou de espectar ó jogador .")
 end
 
--- Seção de Espectar
-local JogadorTab = Tabs.Main:AddSection({
-    Name = "Espectar"
+local Section = JogadorTab:AddSection({
+	Name = "Espectar"
 })
 
 -- Criação do Dropdown para escolher o jogador para espectar
