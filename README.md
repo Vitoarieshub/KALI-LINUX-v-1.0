@@ -243,7 +243,7 @@ local function spectatePlayer(playerName)
     local player = game.Players:FindFirstChild(playerName)
 
     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        workspace.CurrentCamera.CameraSubject = player.Character.HumanoidRootPart
+        workspace.CurrentCamera.CameraSubject = player.Character.giolmr1.Head
         notify("Espectador", "Você está agora espectando: " .. playerName)
     else
         notify("Erro", "Jogador não encontrado.")
@@ -459,57 +459,4 @@ TrollTab:AddButton({
     end
 })
 
-OrionLib:Init()
-
-local isMorning = false  -- Variável para controlar o estado da iluminação
-
--- Função para ajustar a iluminação para parecer de manhã
-local function setMorningLighting()
-    local lighting = game:GetService("Lighting")
-
-    lighting.TimeOfDay = "07:00:00"  -- Define o horário para 7 da manhã
-    lighting.Brightness = 2          -- Define o brilho
-    lighting.ClockTime = 7           -- Ajusta o tempo do relógio
-    lighting.OutdoorAmbient = Color3.fromRGB(175, 221, 255)  -- Cor de luz suave matinal
-    lighting.FogEnd = 300            -- Define o fim da neblina
-    lighting.FogColor = Color3.fromRGB(255, 244, 214)  -- Cor da neblina para um tom matinal
-    lighting.GlobalShadows = true
-
-    notify("Iluminação", "Agora é de manhã!")
-end
-
--- Função para reverter a iluminação para a configuração original
-local function resetLighting()
-    local lighting = game:GetService("Lighting")
-
-    lighting.TimeOfDay = "14:00:00"  -- Define o horário para 14 horas (2 da tarde)
-    lighting.Brightness = 3          -- Ajusta o brilho de volta
-    lighting.ClockTime = 14          -- Ajusta o tempo do relógio de volta
-    lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)  -- Cor padrão
-    lighting.FogEnd = 100000         -- Remove a neblina
-    lighting.FogColor = Color3.fromRGB(255, 255, 255)  -- Cor padrão da neblina
-    lighting.GlobalShadows = true
-
-    notify("Iluminação", "Iluminação padrão restaurada!")
-end
-
--- Função para alternar entre ativar e desativar a iluminação matinal
-local function toggleLighting()
-    if isMorning then
-        resetLighting()
-    else
-        setMorningLighting()
-    end
-    isMorning = not isMorning  -- Inverte o estado
-end
-
--- Botão para alternar a iluminação
-TrollTab:AddButton({
-    Name = "Deixa de Manhã",
-    Callback = function()
-        toggleLighting()
-    end
-})
-
--- Inicialização da interface OrionLib
 OrionLib:Init()
