@@ -252,7 +252,7 @@ end
 
 -- Função para parar de espectar e voltar para o personagem local
 local function stopSpectating()
-    workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+    workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Head")
     notify("Espectador", "Você parou de espectar ó jogador .")
 end
 
