@@ -397,11 +397,18 @@ TrollTab:AddButton({
     end
 })
 
-local Section = TrollTab:AddSection({
+-- Aba Configuração
+local ConfiguraçãoTab = :MakeTab({
+    Name = "Configuração",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+local Section = ConfiguraçãoTab:AddSection({
 	Name = "configuração"
 })
 
-TrollTab:AddButton({
+TConfiguraçãoTab:AddButton({
     Name = "Anti Kick",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Anti-Kick/main/Anti-Kick.lua"))()
@@ -452,7 +459,7 @@ local function toggleFPSBoost()
 end
 
 -- Botão para alternar o boost de FPS
-TrollTab:AddButton({
+ConfiguraçãoTab:AddButton({
     Name = "Boost FPS",
     Callback = function()
         toggleFPSBoost()
