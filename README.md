@@ -17,15 +17,15 @@ local function notify(title, text)
     })
 end
 
--- Aba Início 
-local InícioTab = Window:MakeTab({
-    Name = "Início",
+-- Aba Principal
+local PrincipalTab = Window:MakeTab({
+    Name = "Principal",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
 -- Função Fly
-InícioTab:AddButton({
+PrincipalTab:AddButton({
     Name = "Fly",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Vitoarieshub/Fly-universal-/refs/heads/main/README.md"))()
@@ -34,7 +34,7 @@ InícioTab:AddButton({
 })
 
 -- Função Fly Car
-InícioTab:AddButton({
+PrincipalTab:AddButton({
     Name = "Fly Car",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
@@ -70,7 +70,7 @@ local function toggleNoclip(enable)
     end
 end
 
-InícioTab:AddToggle({
+PrincipalTab:AddToggle({
     Name = "Travessa Paredes",
     Default = false,
     Callback = toggleNoclip
@@ -98,14 +98,14 @@ local function toggleInfiniteJump(enable)
     end
 end
 
-InícioTab:AddToggle({
+PrincipalTab:AddToggle({
     Name = "Pulo Infinito",
     Default = false,
     Callback = toggleInfiniteJump
 })
 
 -- Função para definir a gravidade com base no valor digitado
-InícioTab:AddTextbox({
+PrincipalTab:AddTextbox({
     Name = "Gravidade",
     Default = "196.2",  -- Valor padrão de gravidade no Roblox
     TextDisappear = true,
@@ -122,7 +122,7 @@ InícioTab:AddTextbox({
 })
 
 -- Ajustar Altura do Pulo
-InícioTab:AddTextbox({
+PrincipalTab:AddTextbox({
     Name = "Altura do Pulo",
     Default = "50",
     TextDisappear = true,
@@ -136,7 +136,7 @@ InícioTab:AddTextbox({
 })
 
 -- Ajustar Velocidade
-InícioTab:AddTextbox({
+PrincipalTab:AddTextbox({
     Name = "Velocidade",
     Default = "20",
     TextDisappear = true,
@@ -149,7 +149,7 @@ InícioTab:AddTextbox({
     end
 })
 
-InícioTab:AddButton({
+PrincipalTab:AddButton({
     Name = "Resetar Velocidade Pulo e Gravidade",
     Callback = function()
         local player = game.Players.LocalPlayer
