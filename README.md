@@ -1,7 +1,7 @@
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 
 local Window = OrionLib:MakeWindow({
-    Name = "KALI LINUX",
+    Name = "KALI LINUX MENU",
     HidePremium = false,
     SaveConfig = true,
     ConfigFolder = "KALILINUXConfig"
@@ -17,15 +17,15 @@ local function notify(title, text)
     })
 end
 
--- Aba Geral
-local GeralTab = Window:MakeTab({
-    Name = "Geral",
+-- Aba Início 
+local InícioTab = Window:MakeTab({
+    Name = "Início",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
 -- Função Fly
-GeralTab:AddButton({
+InícioTab:AddButton({
     Name = "Fly",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Vitoarieshub/Fly-universal-/refs/heads/main/README.md"))()
@@ -34,7 +34,7 @@ GeralTab:AddButton({
 })
 
 -- Função Fly Car
-GeralTab:AddButton({
+InícioTab:AddButton({
     Name = "Fly Car",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-Car-Mobile-gui-11884"))()
@@ -70,7 +70,7 @@ local function toggleNoclip(enable)
     end
 end
 
-GeralTab:AddToggle({
+InícioTab:AddToggle({
     Name = "Travessa Paredes",
     Default = false,
     Callback = toggleNoclip
@@ -98,14 +98,14 @@ local function toggleInfiniteJump(enable)
     end
 end
 
-GeralTab:AddToggle({
+InícioTab:AddToggle({
     Name = "Pulo Infinito",
     Default = false,
     Callback = toggleInfiniteJump
 })
 
 -- Função para definir a gravidade com base no valor digitado
-GeralTab:AddTextbox({
+InícioTab:AddTextbox({
     Name = "Gravidade",
     Default = "196.2",  -- Valor padrão de gravidade no Roblox
     TextDisappear = true,
@@ -122,7 +122,7 @@ GeralTab:AddTextbox({
 })
 
 -- Ajustar Altura do Pulo
-GeralTab:AddTextbox({
+InícioTab:AddTextbox({
     Name = "Altura do Pulo",
     Default = "50",
     TextDisappear = true,
@@ -136,7 +136,7 @@ GeralTab:AddTextbox({
 })
 
 -- Ajustar Velocidade
-GeralTab:AddTextbox({
+InícioTab:AddTextbox({
     Name = "Velocidade",
     Default = "20",
     TextDisappear = true,
@@ -149,7 +149,7 @@ GeralTab:AddTextbox({
     end
 })
 
-GeralTab:AddButton({
+InícioTab:AddButton({
     Name = "Resetar Velocidade Pulo e Gravidade",
     Callback = function()
         local player = game.Players.LocalPlayer
@@ -165,57 +165,6 @@ GeralTab:AddButton({
             notify("Erro", "não encontrado!")
         end
     end
-})
-
--- Aba Visuais
-local VisuaisTab = Window:MakeTab({
-    Name = "Visuais",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
--- Funções de ESP
-VisuaisTab:AddButton({
-    Name = "ESP Nome",
-    Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/rSUGN1fK"))()
-        notify("ESP Nome", "Ativado!")
-    end
-})
-
-VisuaisTab:AddButton({
-    Name = "ESP Linhas",
-    Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/nnHbfvGW"))()
-        notify("ESP Linhas", "Ativado!")
-    end
-})
-
--- Função para ajustar FOV
-local function setFOV(newFOV)
-    if newFOV < 30 or newFOV > 300 then
-        notify("Erro", "FOV deve estar entre 30 e 300 graus.")
-        return
-    end
-    game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
-    notify("Campo de Visão", "Alterado para " .. newFOV .. " graus.")
-end
-
--- Alternar Campo de Visão (FOV)
-local fovActive = false
-local function toggleFov(state)
-    fovActive = state
-    if fovActive then
-        setFOV(300)
-    else
-        setFOV(70)
-    end
-end
-
-VisuaisTab:AddToggle({
-    Name = "Campo de Visão",
-    Default = false,
-    Callback = toggleFov
 })
 
 -- Aba Jogador
@@ -357,6 +306,57 @@ end)
 game.Players.PlayerRemoving:Connect(function()
     updatePlayerList(teleportDropdown)
 end)
+
+-- Aba Visuais
+local VisuaisTab = Window:MakeTab({
+    Name = "Visuais",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- Funções de ESP
+VisuaisTab:AddButton({
+    Name = "ESP Nome",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/rSUGN1fK"))()
+        notify("ESP Nome", "Ativado!")
+    end
+})
+
+VisuaisTab:AddButton({
+    Name = "ESP Linhas",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/nnHbfvGW"))()
+        notify("ESP Linhas", "Ativado!")
+    end
+})
+
+-- Função para ajustar FOV
+local function setFOV(newFOV)
+    if newFOV < 30 or newFOV > 300 then
+        notify("Erro", "FOV deve estar entre 30 e 300 graus.")
+        return
+    end
+    game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
+    notify("Campo de Visão", "Alterado para " .. newFOV .. " graus.")
+end
+
+-- Alternar Campo de Visão (FOV)
+local fovActive = false
+local function toggleFov(state)
+    fovActive = state
+    if fovActive then
+        setFOV(300)
+    else
+        setFOV(70)
+    end
+end
+
+VisuaisTab:AddToggle({
+    Name = "Campo de Visão",
+    Default = false,
+    Callback = toggleFov
+})
 
 -- Aba Troll
 local TrollTab = Window:MakeTab({
