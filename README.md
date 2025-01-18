@@ -459,4 +459,12 @@ TrollTab:AddButton({
     end
 })
 
+TrollTab:AddButton({
+    Name = "Dex",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubuser..."))()
+        notify("Dex", "Ativado!")
+    end
+})
+
 OrionLib:Init()
