@@ -406,8 +406,8 @@ local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
 local safePosition = Vector3.new(0, 50, 0) -- Posição segura no mapa
-local voidLimit = -100 -- Limite inferior (não deixar o jogador cair abaixo disso)
-local maxHeight = 200 -- Limite superior (não deixar o jogador ser teletransportado para posições muito altas)
+local voidLimit = -300 -- Limite inferior (não deixar o jogador cair abaixo disso)
+local maxHeight = 300 -- Limite superior (não deixar o jogador ser teletransportado para posições muito altas)
 local isAntiVoidActive = false -- Estado do toggle (desativado por padrão)
 
 -- Função para verificar o "void" e teletransportar o jogador para uma posição segura
