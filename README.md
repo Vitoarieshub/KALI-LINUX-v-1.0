@@ -462,7 +462,7 @@ TrollTab:AddButton({
 TrollTab:AddButton({
     Name = "Dex",
     Callback = function()
-        loadstring(game:HttpGet("https://raw.githubuser..."))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua", true))()
         notify("Dex", "Ativado!")
     end
 })
