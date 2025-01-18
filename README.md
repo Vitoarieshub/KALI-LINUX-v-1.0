@@ -366,14 +366,6 @@ local TrollTab = Window:MakeTab({
 })
 
 TrollTab:AddButton({
-    Name = "Troll",
-    Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/38Jra00x"))()
-        notify("Troll", "Ativado!")
-    end
-})
-
-TrollTab:AddButton({
     Name = "BringParts",
     Callback = function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
@@ -456,14 +448,6 @@ TrollTab:AddButton({
     Name = "Boost FPS",
     Callback = function()
         toggleFPSBoost()
-    end
-})
-
-TrollTab:AddButton({
-    Name = "Dex",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua", true))()
-        notify("Dex", "Ativado!")
     end
 })
 
