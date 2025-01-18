@@ -401,6 +401,57 @@ TrollTab:AddButton({
     end
 })
 
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+local safePosition = Vector3.new(0, 50, 0) -- Posição segura no mapa
+local voidLimit = -100 -- Limite inferior (não deixar o jogador cair abaixo disso)
+local maxHeight = 200 -- Limite superior (não deixar o jogador ser teletransportado para posições muito altas)
+local isAntiVoidActive = false -- Estado do toggle (desativado por padrão)
+
+-- Função para verificar o "void" e teletransportar o jogador para uma posição segura
+local function checkVoid()
+    local currentPosition = humanoidRootPart.Position
+    
+    -- Evita que o jogador caia abaixo do limite inferior (void)
+    if currentPosition.Y < voidLimit then
+        warn("Jogador caiu no Void! Teletransportando para a posição segura.")
+        humanoidRootPart.CFrame = CFrame.new(safePosition) -- Teletransporta para a posição segura
+    end
+
+    -- Evita que o jogador suba para além do limite superior
+    if currentPosition.Y > maxHeight then
+        warn("Jogador foi para cima do mapa! Teletransportando para a posição segura.")
+        humanoidRootPart.CFrame = CFrame.new(safePosition) -- Teletransporta para a posição segura
+    end
+end
+
+-- Função que ativa ou desativa o anti-void
+local function toggleAntiVoid(enabled)
+    isAntiVoidActive = enabled
+end
+
+-- Verifica a cada frame se o jogador está no void ou subiu acima do limite
+game:GetService("RunService").Stepped:Connect(function()
+    if isAntiVoidActive and character and humanoidRootPart then
+        checkVoid()
+    end
+end)
+
+-- Reaplicar lógica quando o personagem for recarregado
+player.CharacterAdded:Connect(function(newCharacter)
+    character = newCharacter
+    humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+end)
+
+-- Adicionando o Toggle ao seu UI
+TrollTab:AddToggle({
+    Name = "Anti Void",
+    Default = false,
+    Callback = toggleAntiVoid
+})
+
 -- Função para aplicar o boost de FPS
 local function applyFPSBoost()
     settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
