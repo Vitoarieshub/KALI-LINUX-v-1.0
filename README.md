@@ -22,7 +22,7 @@ local PrincipalTab = Window:MakeTab({
     Name = "Principal",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
-})
+}) 
 
 -- Função Fly
 PrincipalTab:AddButton({
@@ -194,7 +194,7 @@ VisuaisTab:AddButton({
 -- Função para ajustar FOV
 local function setFOV(newFOV)
     if newFOV < 30 or newFOV > 300 then
-        notify("Erro", "FOV deve estar entre 30 e 300 graus.")
+        notify("Erro", "Deve estar entre 30 e 300 graus.")
         return
     end
     game:GetService("Workspace").CurrentCamera.FieldOfView = newFOV
@@ -366,18 +366,27 @@ local TrollTab = Window:MakeTab({
 })
 
 TrollTab:AddButton({
-    Name = "BringParts",
-    Callback = function()
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Better-Bring-Parts-Ui-SOLARA-and-Fixed-Lags-21780"))()
-        notify("BringParts", "Ativado!")
-    end
-})
-
-TrollTab:AddButton({
     Name = "Teleporte menu",
     Callback = function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
         notify("Teleporte", "Ativado!")
+    end
+})
+
+TrollTab:AddButton({
+    Name = "Click TP",
+    Callback = function()
+        mouse = game.Players.LocalPlayer:GetMouse()
+tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = "Equip to Click TP"
+tool.Activated:connect(function()
+local pos = mouse.Hit+Vector3.new(0,2.5,0)
+pos = CFrame.new(pos.X,pos.Y,pos.Z)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+end)
+tool.Parent = game.Players.LocalPlayer.Backpack
+        notify("Click TP", "Ativado!")
     end
 })
 
